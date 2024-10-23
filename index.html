@@ -731,6 +731,17 @@
             --star-color: white;
             --galaxy-color: #2d2d70;
             --neon-color: #03fcba;
+            --link-color: rgb(0, 0, 255); 
+            --visited-link-color: rgb(0, 0, 255);
+        }
+
+        /* Link styles */
+        a:link {
+            color: var(--link-color); /* Unvisited link */
+        }
+
+        a:visited {
+            color: var(--visited-link-color); /* Visited link */
         }
 
         * {
@@ -996,7 +1007,8 @@
         <div class="container header-content">
             <div class="profile-info">
                 <img src="https://drive.google.com/thumbnail?id=1ogkzge1RoS67NuRqx_W_AEbJg19t9P7w&sz=w1000" alt="Rongjun Huang" class="profile-picture">
-                <h1>Rongjun Huang<br><span class="chinese-name"> </span></h1>
+                <h1>Rongjun Huang<br>
+                    🔭 <span class="chinese-name"> </span></h1>
             </div>
             <nav>
                 <ul>
@@ -1015,22 +1027,25 @@
         
         <div id="about" class="tab-content active">
             <section class="section">
-                <h2>Latest</h2>
-                <p>30/09/2024. I have submitted my second First-author paper based on my Master's project to MNRAS.</p>
-                <p>Currently working on a new project with <a href="https://chongchonghe.github.io/" target="_blank">Dr. Chong-chong He</a> on N-body simulation.</p>
+                <h2>News</h2>
+                <p> Currently, I am seeking for a PhD position. </p>
+                    A visiting researcher at <a href="https://www.mso.anu.edu.au/~krumholz/">Prof. Mark Krumholz</a>'s research group after finishing my Master degree. </p>
+                    My second paper based on my Master research in on arXiv now: <a href="https://doi.org/10.48550/arXiv.2410.14376">https://doi.org/10.48550/arXiv.2410.14376</a>  </p>  
+                    I am working with <a href="https://chongchonghe.github.io/">Dr. ChongChong He</a> to develop a post-processing pipeline for QUOKKA simulation. </p>
             </section>
             <section class="section">
                 <h2>About Me</h2>
                 <p> Research Student of Art (of astronomy) & Archeology (of galaxies). </p>
-                    Hi, I am an astrophysic researcher. My research interest is galaxy evolution and star formation.  </p>  
-                    And yes, I am seeking for a PhD position. </p>
-            </section>
-            <section class="section">
+                    Hi, I am an astrophysic researcher. My research interest is galaxy evolution and star formation.  </p>
+                </p>
                 <h2>Education</h2>
                 <ul>
-                    <li><strong>M.Sc</strong> - Master of Science (Advanced) - Astronomy and Astrophysics, The Australian National University, June 2024</li>
-                    <li><strong>H.Sc</strong> - Bachelor of Science (Honours) - Astronomy and Astrophysics, The Australian National University, December 2022</li>
-                    <li><strong>B.Sc</strong> - Bachelor of Science - Astronomy and Astrophysics, The Australian National University, June 2021</li>
+                    <li><strong>M.Sc</strong> - <a href="https://programsandcourses.anu.edu.au/program/vscaa" target="_blank">Master of Science (Advanced) in Astronomy and Astrophysics</a> </p>
+                        <a href="https://rsaa.anu.edu.au/" target="_blank">Research School of Astronomy & Astrophysics</a>, <a href="https://www.anu.edu.au/" target="_blank">The Australian National University</a>, July 2024</li>
+                    <li><strong>H.Sc</strong> - <a href="https://programsandcourses.anu.edu.au/program/hsc" target="_blank">Bachelor of Science (Honours) - Astronomy and Astrophysics</a> </p>
+                        <a href="https://rsaa.anu.edu.au/" target="_blank">Research School of Astronomy & Astrophysics</a>, <a href="https://www.anu.edu.au/" target="_blank">The Australian National University</a>, December 2022</li>
+                    <li><strong>B.Sc</strong> - <a href="https://programsandcourses.anu.edu.au/program/bsc" target="_blank">Bachelor of Science - Astronomy and Astrophysics</a> </p>
+                        <a href="https://rsaa.anu.edu.au/" target="_blank">Research School of Astronomy & Astrophysics</a>, <a href="https://www.anu.edu.au/" target="_blank">The Australian National University</a>, June 2021</li>
                 </ul>
             </section>
         </div>
@@ -1039,9 +1054,14 @@
             <section class="section">
                 <h2>Research Projects</h2>
                 <ul>
-                    <li><strong>ASTR8010 Master Research (07/23--05/24)</strong><br>Negative Metallicity Gradient in Galactic Outflows Based on QED Simulations</li>
-                    <li><strong>ASTR4005 Honours Research (02/22--10/22)</strong><br>Exploring the Intrinsic Scatter of the Star-Forming Galaxy Main Sequence at Redshift 0.5 to 3.0</li>
-                    <li><strong>ASTR3005 Summer Research (12/20--02/21)</strong><br>Using MAGPHYS+photo-z to Characterise the Properties of Star-Forming Galaxies</li>
+                    <li><strong>Predoctoral Research (11/24-) Supervisors: <a href="https://chongchonghe.github.io/">Dr. ChongChong He</a></strong>
+                        <br>Developing a post-processing pipeline for QUOKKA simulation</li>
+                    <li><strong>ASTR8010 Master Research (07/23--05/24) Supervisors: <a href="https://rsaa.anu.edu.au/people/dr-aditi-vijayan">Dr. Aditi Vijayan</a>, <a href="https://www.mso.anu.edu.au/~krumholz/">Prof. Mark Krumholz</a> </strong>
+                        <br>Negative Metallicity Gradient in Galactic Outflows Based on QED Simulations</li>
+                    <li><strong>ASTR4005 Honours Research (02/22--10/22) Supervisors: Supervisor: <a href="https://sites.google.com/view/ajbattisti/home">Dr. Andrew Battisti</a>, <a href="https://sites.google.com/view/grasha">Dr. Kathryn Grasha</a>, <a href="https://research-repository.uwa.edu.au/en/persons/elisabete-lima-da-cunha-2">A/Prof. Elisabete da Cunha </a></strong>
+                        <br>Exploring the Intrinsic Scatter of the Star-Forming Galaxy Main Sequence at Redshift 0.5 to 3.0</li>
+                    <li><strong>ASTR3005 Summer Research (12/20--02/21) Supervisors: <a href="https://sites.google.com/view/ajbattisti/home">Dr. Andrew Battisti</a>, <a href="https://sites.google.com/view/grasha">Dr. Kathryn Grasha</a></strong>
+                        <br>Using MAGPHYS+photo-z to Characterise the Properties of Star-Forming Galaxies</li>
                 </ul>
             </section>
         </div>
@@ -1051,16 +1071,17 @@
                 <h2>First-Author Publications</h2>
                 <ul>
                     <li>
+                        <strong>QUOKKA-based understanding of outflows (QED) - II. X-ray metallicity gradients as a signature of galactic wind metal loading</strong>
+                        <br>Rongjun Huang, Aditi Vijayan, Mark R. Krumholz
+                        <br>MNRAS (in prep.)
+                        <br><a href="https://doi.org/10.48550/arXiv.2410.14376" target="_blank">Available at arXiv now</a>
+                    </li>
+                    <li>
                         <strong>Exploring the Intrinsic Scatter of the Star-Forming Galaxy Main Sequence at Redshift 0.5 to 3.0</strong>
                         <br>Rongjun Huang, Andrew J. Battisti, Kathryn Grasha, Elisabete da Cunha, Claudia del P Lagos, Sarah K. Leslie & Emily Wisnioski
                         <br>MNRAS (Published, Volume 520, Issue 1, March 2023, Pages 446–460)
                         <br><a href="https://doi.org/10.1093/mnras/stad108" target="_blank">DOI: 10.1093/mnras/stad108</a>
                         <br><a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.520..446H/abstract" target="_blank">NASA ADS</a>
-                    </li>
-                    <li>
-                        <strong>QUOKKA-based understanding of outflows (QED) - II. X-ray metallicity gradients as a signature of galactic wind metal loading</strong>
-                        <br>Rongjun Huang, Aditi Vijayan, Mark R. Krumholz
-                        <br>MNRAS (in prep.)
                     </li>
                 </ul>
             </section>
@@ -1070,7 +1091,7 @@
             <section class="section">
                 <h2>Internships</h2>
                 <p><strong>The Stability of the WiFeS Instrument on the ANU 2.3-Metre Robotic Telescope</strong></p>
-                <p>Supervisor: A/Prof. Chris Lidman</p>
+                <p>Supervisor: <a href="https://rsaa.anu.edu.au/people/associate-professor-chris-lidman" target="_blank">A/Prof. Chris Lidman</a></p>
                 <p>ANU 2.3m Telescope, Siding Spring Observatory (SSO), NSW, Australia (01/29/2024--02/16/2024)</p>
             </section>
             <section class="section">
@@ -1100,11 +1121,11 @@
                 <div class="photo-gallery">
                     <div class="photo-item">
                         <img src="https://drive.google.com/thumbnail?id=1p4SrSEHQNugS92XAYv_UC8SZqNH_RKCn&sz=w1000" alt="With Supervisor Dr. Andrew Battisti in 2024">
-                        <p>With Supervisor <a href="https://sites.google.com/view/ajbattisti/home" target="_blank">Dr. Andrew Battisti</a> in 2024</p>
+                        <p>With Supervisor Dr. Andrew Battisti in 2024</p>
                     </div>
                     <div class="photo-item">
                         <img src="https://drive.google.com/thumbnail?id=1P6WPIIPEg0EdnBMNJER8QINMKzpzCG9_&sz=w1000" alt="With Prof. Brian Schmidt in 2022 Honours Graduation">
-                        <p>With Prof. <a href="https://www.mso.anu.edu.au/~brian/" target="_blank">Brian Schmidt</a> in 2022 Honours Graduation</p>
+                        <p>With Prof. Brian Schmidt in 2022 Honours Graduation</p>
                     </div>
                     <div class="photo-item">
                         <img src="https://drive.google.com/thumbnail?id=1leYZKwlD40kHcU79su7x44-ZUWmPCv9F&sz=w1000" alt="Me in 2020">
