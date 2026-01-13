@@ -1,26 +1,11 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rongjun Huang (黄镕钧) - Astrophysicist</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
-
-        :root {
-            --primary-color: #1a237e;
-            --secondary-color: #3f51b5;
-            --text-color: #333;
-            --background-color: #f4f4f4;
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta name="description" content="Rongjun Huang (黄镕钧) — PhD student at ICRAR/UWA. Research interests: galaxy evolution, star formation, and environmental effects in clusters.">
-            <meta name="keywords" content="Rongjun Huang, 黄镕钧, Astrophysics, Astronomy, Galaxy evolution, Star formation, ICRAR, UWA, ANU">
-            <meta name="author" content="Rongjun Huang">
+    <meta name="description" content="Rongjun Huang (黄镕钧) — PhD student at ICRAR/UWA. Research interests: galaxy evolution, star formation, and environmental effects in clusters.">
+    <meta name="keywords" content="Rongjun Huang, 黄镕钧, Astrophysics, Astronomy, Galaxy evolution, Star formation, ICRAR, UWA, ANU">
+    <meta name="author" content="Rongjun Huang">
 
             <title>Rongjun Huang (黄镕钧) — Astrophysics</title>
 
@@ -49,10 +34,39 @@
                     font-family: 'Roboto', sans-serif;
                     line-height: 1.6;
                     color: var(--text-color);
-                    background: radial-gradient(1200px 800px at 50% -200px, rgba(3, 252, 186, 0.12), transparent 65%),
-                                radial-gradient(800px 500px at 10% 10%, rgba(128, 0, 128, 0.12), transparent 60%),
-                                var(--background-color);
+                    background: var(--background-color);
                     overflow-x: hidden;
+                }
+
+                body::before {
+                    content: "";
+                    position: fixed;
+                    inset: 0;
+                    background: url('https://www.solarsystemscope.com/textures/download/8k_stars_milky_way.jpg') center / cover no-repeat fixed;
+                    filter: saturate(1.2) contrast(1.1) brightness(0.85);
+                    opacity: 0.55;
+                    z-index: -3;
+                }
+
+                body::after {
+                    content: "";
+                    position: fixed;
+                    inset: -20%;
+                    background:
+                        radial-gradient(900px 600px at 15% 20%, rgba(128, 0, 255, 0.22), transparent 60%),
+                        radial-gradient(1000px 800px at 85% 30%, rgba(3, 252, 186, 0.16), transparent 65%),
+                        radial-gradient(900px 700px at 45% 85%, rgba(255, 0, 170, 0.12), transparent 60%);
+                    opacity: 0.75;
+                    mix-blend-mode: screen;
+                    filter: blur(18px);
+                    animation: nebulaDrift 18s ease-in-out infinite alternate;
+                    z-index: -2;
+                    pointer-events: none;
+                }
+
+                @keyframes nebulaDrift {
+                    from { transform: translate3d(-1.5%, -1%, 0) rotate(-1deg) scale(1.02); }
+                    to { transform: translate3d(1.5%, 1%, 0) rotate(1deg) scale(1.05); }
                 }
 
                 a {
@@ -86,6 +100,15 @@
                     z-index: 1000;
                     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
                     backdrop-filter: blur(8px);
+                }
+
+                header::after {
+                    content: "";
+                    position: absolute;
+                    inset: auto 0 0 0;
+                    height: 2px;
+                    background: linear-gradient(90deg, transparent, rgba(3, 252, 186, 0.9), rgba(215, 156, 255, 0.9), transparent);
+                    opacity: 0.75;
                 }
 
                 .header-content {
@@ -166,6 +189,12 @@
                     transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
                 }
 
+                nav a.active {
+                    border-color: rgba(3, 252, 186, 0.7);
+                    background: rgba(3, 252, 186, 0.14);
+                    box-shadow: 0 0 18px rgba(3, 252, 186, 0.18);
+                }
+
                 nav a:hover {
                     transform: translateY(-1px);
                     border-color: rgba(3, 252, 186, 0.55);
@@ -205,6 +234,24 @@
                     padding: 18px 18px;
                     border-radius: 14px;
                     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+                    position: relative;
+                    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+                }
+
+                .section::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    border-radius: 14px;
+                    background: radial-gradient(700px 220px at 50% 0%, rgba(3, 252, 186, 0.12), transparent 60%);
+                    opacity: 0.7;
+                    pointer-events: none;
+                }
+
+                .section:hover {
+                    transform: translateY(-2px);
+                    border-color: rgba(3, 252, 186, 0.55);
+                    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45), 0 0 28px rgba(3, 252, 186, 0.10);
                 }
 
                 .section h2 {
@@ -213,6 +260,15 @@
                     text-shadow: 0 0 12px rgba(3, 252, 186, 0.35);
                     margin: 0 0 10px;
                     font-size: 1.2rem;
+                }
+
+                .section h2::after {
+                    content: "";
+                    display: block;
+                    height: 2px;
+                    margin-top: 8px;
+                    background: linear-gradient(90deg, rgba(3, 252, 186, 0.0), rgba(3, 252, 186, 0.8), rgba(215, 156, 255, 0.75), rgba(3, 252, 186, 0.0));
+                    opacity: 0.6;
                 }
 
                 .muted {
@@ -589,8 +645,12 @@
 
                 function activateTab(tabId) {
                     tabPanels.forEach(panel => panel.classList.remove('active'));
+                    tabLinks.forEach(link => link.classList.remove('active'));
                     const target = document.getElementById(tabId);
                     if (target) target.classList.add('active');
+
+                    const activeLink = document.querySelector(`.tab-link[data-tab="${CSS.escape(tabId)}"]`);
+                    if (activeLink) activeLink.classList.add('active');
                 }
 
                 tabLinks.forEach(link => {
@@ -606,6 +666,8 @@
                 // Initial tab from hash
                 if (location.hash && document.getElementById(location.hash.slice(1))) {
                     activateTab(location.hash.slice(1));
+                } else {
+                    activateTab('about');
                 }
 
                 // Starfield
@@ -684,4 +746,3 @@
             </script>
         </body>
         </html>
-            }
