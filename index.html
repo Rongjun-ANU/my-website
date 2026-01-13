@@ -13,1241 +13,675 @@
             --secondary-color: #3f51b5;
             --text-color: #333;
             --background-color: #f4f4f4;
-        }
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="description" content="Rongjun Huang (黄镕钧) — PhD student at ICRAR/UWA. Research interests: galaxy evolution, star formation, and environmental effects in clusters.">
+            <meta name="keywords" content="Rongjun Huang, 黄镕钧, Astrophysics, Astronomy, Galaxy evolution, Star formation, ICRAR, UWA, ANU">
+            <meta name="author" content="Rongjun Huang">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+            <title>Rongjun Huang (黄镕钧) — Astrophysics</title>
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            overflow-x: hidden;
-        }
+            <link rel="icon" href="data:,">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
+            <style>
+                :root {
+                    --text-color: #eaff00;
+                    --background-color: #0d0d27;
+                    --panel-bg: rgba(0, 0, 0, 0.72);
+                    --panel-border: rgba(3, 252, 186, 0.28);
+                    --galaxy-color: rgba(45, 45, 112, 0.85);
+                    --neon-color: #03fcba;
+                    --muted: rgba(234, 255, 0, 0.75);
+                }
 
-        header {
-            background: var(--primary-color);
-            color: #fff;
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+                body {
+                    font-family: 'Roboto', sans-serif;
+                    line-height: 1.6;
+                    color: var(--text-color);
+                    background: radial-gradient(1200px 800px at 50% -200px, rgba(3, 252, 186, 0.12), transparent 65%),
+                                radial-gradient(800px 500px at 10% 10%, rgba(128, 0, 128, 0.12), transparent 60%),
+                                var(--background-color);
+                    overflow-x: hidden;
+                }
 
-        .profile-info {
-            display: flex;
-            align-items: center;
-        }
+                a {
+                    color: #66aaff;
+                }
+                a:visited {
+                    color: #66aaff;
+                }
+                a:hover {
+                    color: #9ad8ff;
+                }
 
-        .profile-picture {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin-right: 1rem;
-            object-fit: cover;
-        }
+                #stars-canvas {
+                    position: fixed;
+                    inset: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: -1;
+                }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
+                .container {
+                    width: min(1100px, 92%);
+                    margin: 0 auto;
+                }
 
-        nav ul li {
-            margin-left: 1rem;
-        }
+                header {
+                    background: var(--galaxy-color);
+                    color: #fff;
+                    position: fixed;
+                    inset: 0 0 auto 0;
+                    z-index: 1000;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                    backdrop-filter: blur(8px);
+                }
 
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+                .header-content {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 16px;
+                    padding: 14px 0;
+                }
 
-        nav ul li a:hover {
-            color: var(--secondary-color);
-        }
+                .profile-info {
+                    display: flex;
+                    align-items: center;
+                    gap: 14px;
+                    min-width: 0;
+                }
 
-        main {
-            margin-top: 80px;
-            padding: 2rem 0;
-        }
+                .profile-picture {
+                    width: 72px;
+                    height: 72px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    box-shadow: 0 0 24px rgba(3, 252, 186, 0.35);
+                    border: 1px solid rgba(3, 252, 186, 0.25);
+                    flex: 0 0 auto;
+                }
 
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
+                .name-block {
+                    min-width: 0;
+                }
 
-        .tab-content.active {
-            display: block;
-        }
+                header h1 {
+                    font-family: 'Orbitron', sans-serif;
+                    font-size: 1.6rem;
+                    line-height: 1.1;
+                    color: #d79cff;
+                    text-shadow: 0 0 14px rgba(3, 252, 186, 0.35);
+                    margin: 0;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+                .chinese-name {
+                    font-family: '华文楷体', 'STKaiti', 'Kaiti', serif;
+                    font-weight: 400;
+                    color: rgba(215, 156, 255, 0.95);
+                }
 
-        .section {
-            background: #fff;
-            margin-bottom: 2rem;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+                .subtitle {
+                    margin-top: 4px;
+                    font-size: 0.95rem;
+                    color: rgba(255, 255, 255, 0.85);
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
 
-        h2 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
+                nav ul {
+                    list-style: none;
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                    justify-content: flex-end;
+                }
 
-        .social-links {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-        }
+                nav a {
+                    display: inline-block;
+                    color: #fff;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    letter-spacing: 0.06em;
+                    font-weight: 700;
+                    font-size: 0.85rem;
+                    padding: 8px 10px;
+                    border-radius: 10px;
+                    border: 1px solid rgba(255, 255, 255, 0.12);
+                    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+                }
 
-        .social-links a {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-            margin: 0 1rem;
-            transition: color 0.3s ease;
-        }
+                nav a:hover {
+                    transform: translateY(-1px);
+                    border-color: rgba(3, 252, 186, 0.55);
+                    background: rgba(3, 252, 186, 0.10);
+                }
 
-        .social-links a:hover {
-            color: var(--secondary-color);
-        }
+                main {
+                    padding: 170px 0 28px;
+                }
 
-        .photo-gallery {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
+                #typed-intro {
+                    font-size: 1.15rem;
+                    font-weight: 300;
+                    min-height: 2em;
+                    color: var(--neon-color);
+                    text-shadow: 0 0 12px rgba(3, 252, 186, 0.45);
+                    margin: 0 0 18px;
+                }
 
-        .photo-item {
-            width: 30%;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
+                .tab-content {
+                    display: none;
+                    animation: fadeIn 0.25s ease;
+                }
+                .tab-content.active {
+                    display: block;
+                }
 
-        .photo-item img {
-            width: 100%;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(4px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
 
-        .photo-item img:hover {
-            transform: scale(1.05);
-        }
+                .section {
+                    background: var(--panel-bg);
+                    border: 1px solid var(--panel-border);
+                    margin: 0 0 18px;
+                    padding: 18px 18px;
+                    border-radius: 14px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+                }
 
-        #stars-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
+                .section h2 {
+                    font-family: 'Orbitron', sans-serif;
+                    color: var(--neon-color);
+                    text-shadow: 0 0 12px rgba(3, 252, 186, 0.35);
+                    margin: 0 0 10px;
+                    font-size: 1.2rem;
+                }
 
-        #typed-intro {
-            font-size: 1.5rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-            min-height: 2em;
-        }
+                .muted {
+                    color: var(--muted);
+                }
 
-        footer {
-            background: var(--primary-color);
-            color: #fff;
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
-        }
+                ul {
+                    padding-left: 18px;
+                }
+                li {
+                    margin: 8px 0;
+                }
 
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-            }
+                .kpi {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    margin-top: 10px;
+                }
+                .chip {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 8px 10px;
+                    border-radius: 999px;
+                    border: 1px solid rgba(3, 252, 186, 0.35);
+                    background: rgba(3, 252, 186, 0.08);
+                    font-size: 0.92rem;
+                }
 
-            nav ul {
-                flex-direction: column;
-            }
+                .photo-gallery {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 12px;
+                }
+                .photo-item {
+                    text-align: center;
+                }
+                .photo-item img {
+                    width: 100%;
+                    border-radius: 12px;
+                    border: 1px solid rgba(3, 252, 186, 0.25);
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                }
+                .photo-item img:hover {
+                    transform: scale(1.02);
+                    box-shadow: 0 0 22px rgba(3, 252, 186, 0.25);
+                }
 
-            nav ul li {
-                margin: 0.5rem 0;
-            }
+                footer {
+                    background: rgba(45, 45, 112, 0.65);
+                    border-top: 1px solid rgba(3, 252, 186, 0.20);
+                    color: #fff;
+                    text-align: center;
+                    padding: 16px 0;
+                }
 
-            .photo-item {
-                width: 100%;
-            }
-        }
-    </style>
-</head>
-<body>
-    <canvas id="stars-canvas"></canvas>
-    <header>
-        <div class="container header-content">
-            <div class="profile-info">
-                <img src="https://drive.google.com/uc?export=view&id=1ogkzge1RoS67NuRqx_W_AEbJg19t9P7w" alt="Rongjun Huang" class="profile-picture">
-                <h1>Rongjun Huang (黄镕钧)</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#about" class="tab-link" data-tab="about">About</a></li>
-                    <li><a href="#research" class="tab-link" data-tab="research">Research</a></li>
-                    <li><a href="#publications" class="tab-link" data-tab="publications">Publications</a></li>
-                    <li><a href="#experience" class="tab-link" data-tab="experience">Experience</a></li>
-                    <li><a href="#gallery" class="tab-link" data-tab="gallery">Gallery</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+                .social-links {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                    gap: 14px;
+                    margin-bottom: 10px;
+                }
+                .social-links a {
+                    color: var(--neon-color);
+                    font-size: 1.35rem;
+                    transition: transform 0.2s ease;
+                }
+                .social-links a:hover {
+                    transform: translateY(-2px);
+                }
 
-    <main class="container">
-        <div id="typed-intro"></div>
-        
-        <div id="about" class="tab-content active">
-            <section class="section">
-                <h2>About Me</h2>
-                <p>I am an astrophysicist specializing in galaxy evolution and star formation. My research focuses on understanding the intrinsic properties of galaxies across cosmic time.</p>
-            </section>
-            <section class="section">
-                <h2>Education</h2>
-                <ul>
-                    <li><strong>M.Sc</strong> - Master of Science (Advanced) - Astronomy and Astrophysics, The Australian National University, June 2024</li>
-                    <li><strong>H.Sc</strong> - Bachelor of Science (Honours) - Astronomy and Astrophysics, The Australian National University, December 2022</li>
-                    <li><strong>B.Sc</strong> - Bachelor of Science - Astronomy and Astrophysics, The Australian National University, June 2021</li>
-                </ul>
-            </section>
-        </div>
+                @media (max-width: 900px) {
+                    .photo-gallery {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+                }
 
-        <div id="research" class="tab-content">
-            <section class="section">
-                <h2>Research Projects</h2>
-                <ul>
-                    <li><strong>ASTR8010 Master Research (07/23--05/24)</strong><br>Negative Metallicity Gradient in Galactic Outflows Based on QED Simulations</li>
-                    <li><strong>ASTR4005 Honours Research (02/22--10/22)</strong><br>Exploring the Intrinsic Scatter of the Star-Forming Galaxy Main Sequence at Redshift 0.5 to 3.0</li>
-                    <li><strong>ASTR3005 Summer Research (12/20--02/21)</strong><br>Using MAGPHYS+photo-z to Characterise the Properties of Star-Forming Galaxies</li>
-                </ul>
-            </section>
-        </div>
+                @media (max-width: 600px) {
+                    header h1 {
+                        font-size: 1.25rem;
+                    }
+                    .subtitle {
+                        display: none;
+                    }
+                    main {
+                        padding-top: 195px;
+                    }
+                    .photo-gallery {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            </style>
+        </head>
 
-        <div id="publications" class="tab-content">
-            <section class="section">
-                <h2>First-Author Publications</h2>
-                <ul>
-                    <li>
-                        <strong>Exploring the Intrinsic Scatter of the Star-Forming Galaxy Main Sequence at Redshift 0.5 to 3.0</strong>
-                        <br>Rongjun Huang, Andrew J. Battisti, Kathryn Grasha, Elisabete da Cunha, Claudia del P Lagos, Sarah K. Leslie & Emily Wisnioski
-                        <br>MNRAS (Published, Volume 520, Issue 1, March 2023, Pages 446–460)
-                        <br><a href="https://doi.org/10.1093/mnras/stad108" target="_blank">DOI: 10.1093/mnras/stad108</a>
-                        <br><a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.520..446H/abstract" target="_blank">NASA ADS</a>
-                    </li>
-                    <li>
-                        <strong>QUOKKA-based understanding of outflows (QED) - II. X-ray metallicity gradients as a signature of galactic wind metal loading</strong>
-                        <br>Rongjun Huang, Aditi Vijayan, Mark R. Krumholz
-                        <br>MNRAS (in prep.)
-                    </li>
-                </ul>
-            </section>
-        </div>
+        <body>
+            <canvas id="stars-canvas"></canvas>
 
-        <div id="experience" class="tab-content">
-            <section class="section">
-                <h2>Internships</h2>
-                <p><strong>The Stability of the WiFeS Instrument on the ANU 2.3-Metre Robotic Telescope</strong></p>
-                <p>Supervisor: A/Prof. Chris Lidman</p>
-                <p>ANU 2.3m Telescope, Siding Spring Observatory (SSO), NSW, Australia (01/29/2024--02/16/2024)</p>
-            </section>
-            <section class="section">
-                <h2>Professional Affiliations</h2>
-                <p>Member (Student) -- ARC Centre of Excellence for All Sky Astrophysics in 3 Dimensions (ASTRO 3D), Australia</p>
-            </section>
-            <section class="section">
-                <h2>Conference Talks</h2>
-                <ul>
-                    <li><strong>Exploring the Intrinsic Scatter of the Star-Forming Galaxy Main Sequence at Redshift 0.5 to 3.0</strong> R. Huang. 2022 ASTRO 3D Science Meeting, Burnley, VIC, Australia (Talk; June 2022).</li>
-                    <li><strong>Sparkler Talk (1-min): Intrinsic Scatter of the Star-Forming Galaxy Main Sequence</strong> R. Huang. 2023 ASTRO 3D Science Meeting, Freemantle, WA, Australia (Talk; June 2023).</li>
-                </ul>
-            </section>
-            <section class="section">
-                <h2>Observing Experience</h2>
-                <ul>
-                    <li><strong>Extremely Metal Poor Stars in Milky Way</strong> ANU 2.3m Telescope, Siding Spring Observatory (SSO), NSW, Australia (September 2019; 3 nights)</li>
-                    <li><strong>The GALactic Archaeology with HERMES (GALAH) survey in 2024A</strong> Anglo-Australian Telescope (AAT), Siding Spring Observatory (SSO), NSW, Australia (July 2024 [remote observing through Mount Stromlo Observatory (MSO) observation room])</li>
-                </ul>
-            </section>
-        </div>
-
-        <div id="gallery" class="tab-content">
-            <section class="section">
-                <h2>Photo Gallery</h2>
-                <div class="photo-gallery">
-                    <div class="photo-item">
-                        <img src="https://drive.google.com/uc?export=view&id=1p4SrSEHQNugS92XAYv_UC8SZqNH_RKCn" alt="With Supervisor Andrew Battisti">
-                        <p>With Supervisor Andrew Battisti</p>
+            <header>
+                <div class="container header-content">
+                    <div class="profile-info">
+                        <img
+                            src="https://drive.google.com/thumbnail?id=1ogkzge1RoS67NuRqx_W_AEbJg19t9P7w&sz=w600"
+                            alt="Rongjun Huang"
+                            class="profile-picture"
+                        >
+                        <div class="name-block">
+                            <h1>Rongjun Huang <span class="chinese-name">(黄镕钧)</span></h1>
+                            <div class="subtitle">PhD student — ICRAR / The University of Western Australia</div>
+                        </div>
                     </div>
-                    <div class="photo-item">
-                        <img src="https://drive.google.com/uc?export=view&id=1P6WPIIPEg0EdnBMNJER8QINMKzpzCG9_" alt="Honours Graduation with Brian Schmidt">
-                        <p>Honours Graduation with Brian Schmidt</p>
-                    </div>
-                    <div class="photo-item">
-                        <img src="https://drive.google.com/uc?export=view&id=1leYZKwlD40kHcU79su7x44-ZUWmPCv9F" alt="Rongjun Huang">
-                        <p>Rongjun Huang</p>
-                    </div>
+                    <nav>
+                        <ul>
+                            <li><a href="#about" class="tab-link" data-tab="about">About</a></li>
+                            <li><a href="#research" class="tab-link" data-tab="research">Research</a></li>
+                            <li><a href="#publications" class="tab-link" data-tab="publications">Publications</a></li>
+                            <li><a href="#experience" class="tab-link" data-tab="experience">CV</a></li>
+                            <li><a href="#gallery" class="tab-link" data-tab="gallery">Gallery</a></li>
+                        </ul>
+                    </nav>
                 </div>
-            </section>
-        </div>
-    </main>
-
-    <footer>
-        <div class="social-links">
-            <a href="https://www.linkedin.com/in/rongjun-huang/" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="https://orcid.org/0000-0002-6646-8365" target="_blank"><i class="fab fa-orcid"></i></a>
-            <a href="https://github.com/Rongjun-ANU" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="https://rsaa.anu.edu.au/people/mr-rongjun-huang" target="_blank"><i class="fas fa-university"></i></a>
-            <a href="https://astro3d.org.au/member/rongjunhuang/" target="_blank"><i class="fas fa-meteor"></i></a>
-            <a href="https://scholar.google.com/citations?user=ziERchkAAAAJ&hl=en&oi=ao" target="_blank"><i class="fas fa-graduation-cap"></i></a>
-            <a href="https://arxiv.org/search/?query=Huang%2C+Rongjun&searchtype=author&abstracts=show&order=-announced_date_first&size=50" target="_blank"><i class="fas fa-file-alt"></i></a>
-        </div>
-        <p>Contact: Rongjun.Huang@alumni.anu.edu.au | Astro@Rongjun-Huang.com</p>
-    </footer>
-
-    <script>
-        // Tab functionality
-        document.querySelectorAll('.tab-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const tabId = link.getAttribute('data-tab');
-                document.querySelectorAll('.tab-content').forEach(tab => {
-                    tab.classList.remove('active');
-                });
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-
-        // Starfield animation
-        const canvas = document.getElementById('stars-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        function createStars() {
-            stars = [];
-            for (let i = 0; i < 100; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5,
-                    vx: Math.floor(Math.random() * 50) - 25,
-                    vy: Math.floor(Math.random() * 50) - 25
-                });
-            }
-        }
-
-        function drawStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'white';
-            ctx.strokeStyle = 'white';
-            for (let i = 0; i < stars.length; i++) {
-                let star = stars[i];
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.stroke();
-            }
-        }
-
-        function updateStars() {
-            for (let i = 0; i < stars.length; i++) {
-                let star = stars[i];
-                star.x += star.vx / 30;
-                star.y += star.vy / 30;
-                if (star.x < 0 || star.x > canvas.width) star.vx = -star.vx;
-                if (star.y < 0 || star.y > canvas.height) star.vy = -star.vy;
-            }
-        }
-
-        function animateStars() {
-            drawStars();
-            updateStars();
-            requestAnimationFrame(animateStars);
-        }
-
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            createStars();
-        });
-
-        resizeCanvas();
-        createStars();
-        animateStars();
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Typing effect for the intro text
-        const introText = "Exploring the universe, one galaxy at a time.";
-        let i = 0;
-        const speed = 50; // Typing speed in milliseconds
-
-        function typeIntro() {
-            if (i < introText.length) {
-                document.getElementById("typed-intro").innerHTML += introText.charAt(i);
-                i++;
-                setTimeout(typeIntro, speed);
-            }
-        }
-
-        // Start typing effect when the page loads
-        window.onload = typeIntro;
-    </script>
-</body>
-</html> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<!-- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rongjun Huang (黄镕钧) - Astrophysicist</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
-
-        :root {
-            --primary-color: #1a237e;
-            --secondary-color: #3f51b5;
-            --text-color: #eaff00;
-            --background-color: #0d0d27;
-            --star-color: white;
-            --galaxy-color: #2d2d70;
-            --neon-color: #03fcba;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            overflow-x: hidden;
-            background-image: url('https://www.nasa.gov/sites/default/files/thumbnails/image/pia24987-web.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-        }
-
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-
-        header {
-            background: var(--galaxy-color);
-            color: #fff;
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: background-color 0.5s ease;
-        }
-
-        header:hover {
-            background-color: var(--neon-color);
-        }
-
-        header h1 {
-            font-family: 'Orbitron', sans-serif;
-            margin: 0;
-            font-size: 2.5rem;
-            color: #800080; /* Purple */
-            text-shadow: 0 0 10px var(--neon-color); /* Neon glow effect */
-        }
-
-        
-        
-        header img {
-            border-radius: 50%;
-            width: 100px;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            box-shadow: 0 0 20px var(--neon-color);
-        }
-
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .profile-info {
-            display: flex;
-            align-items: center;
-            animation: slideInFromLeft 1.5s ease;
-        }
-
-        .profile-picture {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin-right: 1rem;
-            object-fit: cover;
-            box-shadow: 0 0 20px var(--neon-color);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            animation: fadeIn 1.5s ease;
-        }
-
-        nav ul li {
-            margin-left: 1rem;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            color: var(--secondary-color);
-            transform: scale(1.2);
-        }
-
-        main {
-            margin-top: 80px;
-            padding: 2rem 0;
-            animation: zoomIn 2s ease-in-out;
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes slideInFromLeft {
-            0% {transform: translateX(-100%); opacity: 0;}
-            100% {transform: translateX(0); opacity: 1;}
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes zoomIn {
-            0% {transform: scale(0.5); opacity: 0;}
-            100% {transform: scale(1); opacity: 1;}
-        }
-
-        .section {
-            background: rgba(255, 255, 255, 0.1);
-            margin-bottom: 2rem;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2);
-        }
-
-        h2 {
-            color: var(--neon-color);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 10px var(--neon-color);
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        .social-links a {
-            color: var(--neon-color);
-            font-size: 1.5rem;
-            margin: 0 1rem;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: var(--secondary-color);
-            transform: scale(1.2);
-        }
-
-        .photo-gallery {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        .photo-item {
-            width: 30%;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .photo-item img {
-            width: 100%;
-            border-radius: 8px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .photo-item img:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--neon-color);
-        }
-
-        #stars-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        #typed-intro {
-            font-size: 1.8rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-            min-height: 2em;
-            color: var(--neon-color);
-            text-shadow: 0 0 10px var(--neon-color);
-        }
-
-        footer {
-            background: var(--galaxy-color);
-            color: #fff;
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-            }
-
-            nav ul {
-                flex-direction: column;
-            }
-
-            nav ul li {
-                margin: 0.5rem 0;
-            }
-
-            .photo-item {
-                width: 100%;
-            }
-        }
-    </style>
-</head> -->
-
-<head>
-    <!-- Meta Tags for SEO and Responsiveness -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Rongjun Huang - Astrophysicist specializing in galaxy evolution and star formation. Researcher at The Australian National University.">
-    <meta name="keywords" content="Rongjun Huang, Astrophysics, Astronomy, Galaxy Evolution, Star Formation, ANU, 黄镕钧">
-    <meta name="author" content="Rongjun Huang">
-    
-    <!-- Title of the Page -->
-    <title>Rongjun Huang - Astrophysicist</title>
-    
-    <!-- Favicon (Replace with your favicon URL) -->
-    <link rel="icon" href="https://example.com/favicon.ico" type="image/x-icon">
-
-    <!-- Font Awesome for Social Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-    <!-- Google Fonts Import for Roboto and Orbitron -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-
-    <!-- Main Stylesheet -->
-    <style>
-        :root {
-            --primary-color: #1a237e;
-            --secondary-color: #3f51b5;
-            --text-color: #eaff00;
-            --background-color: #0d0d27;
-            --star-color: white;
-            --galaxy-color: #2d2d70;
-            --neon-color: #03fcba;
-            --link-color: rgb(0, 0, 255); 
-            --visited-link-color: rgb(0, 0, 255);
-        }
-
-        /* Link styles */
-        a:link {
-            color: var(--link-color); /* Unvisited link */
-        }
-
-        a:visited {
-            color: var(--visited-link-color); /* Visited link */
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            overflow-x: hidden;
-            background-image: url('https://www.solarsystemscope.com/textures/download/8k_stars_milky_way.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-        }
-
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-
-        header {
-            background: var(--galaxy-color);
-            color: #fff;
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: background-color 0.5s ease;
-        }
-
-        header:hover {
-            background-color: var(--neon-color);
-        }
-
-        header h1 {
-            font-family: 'Orbitron', sans-serif;
-            margin: 0;
-            font-size: 2.5rem;
-            color: #800080; /* Purple */
-            text-shadow: 0 0 10px var(--neon-color); /* Neon glow effect */
-        }
-
-        header img {
-            border-radius: 50%;
-            width: 100px;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            box-shadow: 0 0 20px var(--neon-color);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* Profile info with larger avatar */
-        .profile-info {
-            display: flex;
-            align-items: center; /* Change to center alignment */
-            margin-top: 20px;
-            margin-bottom: 20px; /* Add some bottom margin */
-        }
-
-        .profile-info img {
-            border-radius: 50%;
-            width: 100px; /* Reduce avatar size */
-            height: 100px;
-            margin-right: 20px;
-        }
-
-        header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem; /* Slightly reduce font size */
-            color: #800080;
-            margin: 0;
-            text-shadow: 0 0 10px var(--neon-color);
-            line-height: 1.2;
-        }
-
-        /* Chinese name styling */
-        .chinese-name {
-            font-family: '华文楷体', 'STKaiti', 'Kaiti', cursive;
-            color: #800080; /* Changed to purple */
-            text-shadow: 0 0 10px var(--neon-color); /* Added a subtle text shadow for glow effect */
-        }
-
-        /* Additional styling for sections */
-        section {
-            padding: 20px;
-            margin-top: 200px;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 10px;
-        }
-
-        /* Optional section title styling */
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: #00ffea; /* Title color consistent with header */
-            text-shadow: 0px 0px 10px #00ffea;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-transform: uppercase;
-            text-decoration: none;
-            padding: 0.5rem;
-        }
-
-        nav ul li a:hover {
-            color: #ff00ff;
-        }
-
-        main {
-            margin-top: 256px;
-            padding: 2rem 0;
-            animation: zoomIn 2s ease-in-out;
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes slideInFromLeft {
-            0% {transform: translateX(-100%); opacity: 0;}
-            100% {transform: translateX(0); opacity: 1;}
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes zoomIn {
-            0% {transform: scale(0.5); opacity: 0;}
-            100% {transform: scale(1); opacity: 1;}
-        }
-
-        .section {
-            background: rgba(255, 255, 255, 0.1);
-            margin-bottom: 2rem;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2);
-        }
-
-        h2 {
-            color: var(--neon-color);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 10px var(--neon-color);
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        .social-links a {
-            color: var(--neon-color);
-            font-size: 1.5rem;
-            margin: 0 1rem;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: var(--secondary-color);
-            transform: scale(1.2);
-        }
-
-        .photo-gallery {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        .photo-item {
-            width: 30%;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .photo-item img {
-            width: 100%;
-            border-radius: 8px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .photo-item img:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--neon-color);
-        }
-
-        #stars-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        #typed-intro {
-            font-size: 1.8rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-            min-height: 2em;
-            color: var(--neon-color);
-            text-shadow: 0 0 10px var(--neon-color);
-        }
-
-        footer {
-            background: var(--galaxy-color);
-            color: #fff;
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-            }
-
-            nav ul {
-                flex-direction: column;
-            }
-
-            nav ul li {
-                margin: 0.5rem 0;
-            }
-
-            .photo-item {
-                width: 100%;
-            }
-        }
-    </style>
-</head>
-
-
-<body>
-    <canvas id="stars-canvas"></canvas>
-    <header>
-        <div class="container header-content">
-            <div class="profile-info">
-                <img src="https://drive.google.com/thumbnail?id=1ogkzge1RoS67NuRqx_W_AEbJg19t9P7w&sz=w1000" alt="Rongjun Huang" class="profile-picture">
-                <h1>Rongjun Huang<br>
-                    🔭 <span class="chinese-name"> </span></h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#about" class="tab-link" data-tab="about">About</a></li>
-                    <li><a href="#research" class="tab-link" data-tab="research">Research</a></li>
-                    <li><a href="#publications" class="tab-link" data-tab="publications">Publications</a></li>
-                    <li><a href="#experience" class="tab-link" data-tab="experience">Experience</a></li>
-                    <li><a href="#gallery" class="tab-link" data-tab="gallery">Gallery</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main class="container">
-        <div id="typed-intro"></div>
-        
-        <div id="about" class="tab-content active">
-            <section class="section">
-                <h2>News</h2>
-                <p> Currently, I am seeking for a PhD position. </p>
-                    A visiting researcher at <a href="https://www.mso.anu.edu.au/~krumholz/">Prof. Mark Krumholz</a>'s research group after finishing my Master degree. </p>
-                    My second paper based on my Master research in on arXiv now: <a href="https://doi.org/10.48550/arXiv.2410.14376">https://doi.org/10.48550/arXiv.2410.14376</a>  </p>  
-                    I am working with <a href="https://chongchonghe.github.io/">Dr. ChongChong He</a> to develop a post-processing pipeline for QUOKKA simulation. </p>
-            </section>
-            <section class="section">
-                <h2>About Me</h2>
-                <p> Research Student of Art (of astronomy) & Archeology (of galaxies). </p>
-                    Hi, I am an astrophysic researcher. My research interest is galaxy evolution and star formation.  </p>
+            </header>
+
+            <main class="container">
+                <div id="typed-intro" aria-live="polite"></div>
+
+                <div id="about" class="tab-content active">
+                    <section class="section">
+                        <h2>About</h2>
+                        <p>
+                            I am a PhD student at the International Centre for Radio Astronomy Research (ICRAR),
+                            The University of Western Australia (2025–2029). My research focuses on galaxy evolution,
+                            spatially-resolved star formation, and environmental effects in clusters.
+                        </p>
+                        <div class="kpi">
+                            <div class="chip"><i class="fas fa-envelope"></i> Rongjun.Huang@icrar.org</div>
+                            <div class="chip"><i class="fas fa-envelope"></i> Rongjun.Huang@research.uwa.edu.au</div>
+                            <div class="chip"><i class="fas fa-envelope"></i> Astro@Rongjun-Huang.com</div>
+                            <div class="chip"><i class="fas fa-globe"></i> <a href="https://www.Rongjun-Huang.com" target="_blank" rel="noopener">www.Rongjun-Huang.com</a></div>
+                        </div>
+                    </section>
+
+                    <section class="section">
+                        <h2>Education</h2>
+                        <ul>
+                            <li>
+                                <strong>The University of Western Australia</strong> — ICRAR, Crawley, WA, Australia<br>
+                                PhD student — Doctor of Philosophy (2025–2029)<br>
+                                <span class="muted">Thesis:</span> Environmental effects on spatially-resolved star formation and interstellar medium properties in the Virgo Cluster<br>
+                                <span class="muted">Supervisor:</span> Prof. Luca Cortese
+                            </li>
+                            <li>
+                                <strong>The Australian National University</strong> — Research School of Astronomy &amp; Astrophysics, Weston Creek, ACT, Australia<br>
+                                M.Sc — Master of Science (Advanced), Astronomy and Astrophysics (June 2024), GPA 7/7 (Commendation)<br>
+                                <span class="muted">Thesis:</span> Negative metallicity gradient in galactic outflows based on QED simulations<br>
+                                <span class="muted">Supervisor:</span> Prof. Mark Krumholz
+                            </li>
+                            <li>
+                                <strong>The Australian National University</strong> — Research School of Astronomy &amp; Astrophysics, Weston Creek, ACT, Australia<br>
+                                H.Sc — Bachelor of Science (Honours), Astronomy and Astrophysics (December 2022), First Class Honours (H1, 82/100)<br>
+                                <span class="muted">Thesis:</span> Exploring the intrinsic scatter of the star-forming galaxy main sequence at redshift 0.5 to 3.0<br>
+                                <span class="muted">Supervisor:</span> Dr. Andrew Battisti
+                            </li>
+                            <li>
+                                <strong>The Australian National University</strong> — Research School of Astronomy &amp; Astrophysics, Acton, ACT, Australia<br>
+                                B.Sc — Bachelor of Science, Astronomy and Astrophysics (June 2021), GPA 5.6/7<br>
+                                <span class="muted">Thesis:</span> Using MAGPHYS+photo-z to characterise the properties of star-forming galaxies<br>
+                                <span class="muted">Supervisor:</span> Dr. Andrew Battisti
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+
+                <div id="research" class="tab-content">
+                    <section class="section">
+                        <h2>Research</h2>
+                        <ul>
+                            <li>
+                                <strong>PhD thesis (2025–2029)</strong>: Environmental effects on spatially-resolved star formation and interstellar medium properties in the Virgo Cluster.
+                                <span class="muted">Supervisor:</span> Prof. Luca Cortese
+                            </li>
+                            <li>
+                                <strong>Interests</strong>: galaxy evolution; star formation; spatially-resolved ISM diagnostics; environmental quenching and transformation.
+                            </li>
+                        </ul>
+                        <p class="muted" style="margin-top:10px;">
+                            If you want, I can also add a “Research highlights” subsection once you tell me your preferred 3–5 highlight bullets.
+                        </p>
+                    </section>
+                </div>
+
+                <div id="publications" class="tab-content">
+                    <section class="section">
+                        <h2>First-author Publications</h2>
+                        <ol>
+                            <li>
+                                <strong><em>MAUVE–MUSE: The origin of the spatially-resolved mass–metallicity relation’s secondary dependence on star formation rate surface density</em></strong><br>
+                                <strong>Rongjun Huang</strong>, Luca Cortese, MAUVE Collaboration. 2026. <span class="muted">(In prep.)</span>
+                            </li>
+                            <li>
+                                <strong><em>Quokka-based understanding of outflows (QED) — IV. Limitations of Hα as an outflow diagnostic</em></strong><br>
+                                <strong>Rongjun Huang</strong>, Aditi Vijayan, Mark R. Krumholz. 2026. <span class="muted">MNRAS (Submitted).</span><br>
+                                DOI: <a href="https://doi.org/10.48550/arXiv.2511.05056" target="_blank" rel="noopener">10.48550/arXiv.2511.05056</a>
+                            </li>
+                            <li>
+                                <strong><em>Quokka-based understanding of outflows (QED) — II. X-ray metallicity gradients as a signature of galactic wind metal loading</em></strong><br>
+                                <strong>Rongjun Huang</strong>, Aditi Vijayan, Mark R. Krumholz. 2025. <span class="muted">MNRAS 539(2), 1723–1737.</span><br>
+                                DOI: <a href="https://doi.org/10.1093/mnras/staf593" target="_blank" rel="noopener">10.1093/mnras/staf593</a>
+                                <span class="muted">(Citations: 1, per NASA/ADS)</span>
+                            </li>
+                            <li>
+                                <strong><em>Exploring the intrinsic scatter of the star-forming galaxy main sequence at redshift 0.5 to 3.0</em></strong><br>
+                                <strong>Rongjun Huang</strong>, Andrew J. Battisti, Kathryn Grasha, Elisabete da Cunha, Claudia del P Lagos, Sarah K. Leslie &amp; Emily Wisnioski. 2023.
+                                <span class="muted">MNRAS 520(1), 446–460.</span><br>
+                                DOI: <a href="https://doi.org/10.1093/mnras/stad108" target="_blank" rel="noopener">10.1093/mnras/stad108</a>
+                                <span class="muted">(Citations: 11, per NASA/ADS)</span>
+                            </li>
+                        </ol>
+                    </section>
+                </div>
+
+                <div id="experience" class="tab-content">
+                    <section class="section">
+                        <h2>Granted Observation</h2>
+                        <p>
+                            <strong>Anatomy of a fall: Dissecting the environment-driven transformation of late-type Virgo cluster galaxies with HST UV-optical imaging of star clusters, associations, and HII regions</strong><br>
+                            Co-PI — Hubble Space Telescope (HST) — 145 orbits (~108.8 hr)
+                        </p>
+                    </section>
+
+                    <section class="section">
+                        <h2>Observing Experience</h2>
+                        <ul>
+                            <li>
+                                <strong>Extremely Metal Poor Stars in Milky Way</strong> — ANU 2.3m Telescope, Siding Spring Observatory (SSO), NSW, Australia
+                                <span class="muted">(September 2019; 3 nights)</span>
+                            </li>
+                            <li>
+                                <strong>GALAH survey (2024A)</strong> — Anglo-Australian Telescope (AAT), SSO, NSW, Australia
+                                <span class="muted">(July 2024; remote via Mount Stromlo Observatory observation room)</span>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section class="section">
+                        <h2>HPC Experience</h2>
+                        <ul>
+                            <li><strong>NCI / Gadi</strong> — Project jh2: Star Formation and Feedback in a Turbulent Interstellar Medium <span class="muted">(2023–present)</span></li>
+                            <li><strong>Pawsey / Setonix</strong> — Pawsey0807 <span class="muted">(2023–present)</span></li>
+                            <li><strong>Swinburne / OzSTAR</strong> — IFS Data Analysis (oz084) <span class="muted">(2025–present)</span></li>
+                            <li><strong>CADC / CANFAR</strong> — Multiphase Astrophysics to Unveil the Virgo Environment (MAUVE) <span class="muted">(2025–present)</span></li>
+                        </ul>
+                    </section>
+
+                    <section class="section">
+                        <h2>Software Development</h2>
+                        <ul>
+                            <li>
+                                <strong>The nGIST Pipeline</strong> — a galaxy IFS analysis pipeline for modern IFS data<br>
+                                <a href="https://github.com/geckos-survey/ngist" target="_blank" rel="noopener">https://github.com/geckos-survey/ngist</a>
+                            </li>
+                            <li>
+                                <strong>Post-processing pipeline for <em>Quokka</em> simulation code</strong> as part of the <em>yt</em> frontend<br>
+                                <a href="https://github.com/chongchonghe/yt/tree/Rongjun-ANUquokka-frontend" target="_blank" rel="noopener">https://github.com/chongchonghe/yt/tree/Rongjun-ANUquokka-frontend</a>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section class="section">
+                        <h2>Internship</h2>
+                        <p>
+                            <strong>The Stability of the WiFeS Instrument on the ANU 2.3-Metre Robotic Telescope</strong><br>
+                            Supervisor: A/Prof. Chris Lidman<br>
+                            ANU 2.3m Telescope, Siding Spring Observatory (SSO), NSW, Australia <span class="muted">(01/29/2024–02/16/2024)</span>
+                        </p>
+                    </section>
+
+                    <section class="section">
+                        <h2>Professional Affiliations</h2>
+                        <p>
+                            Member (Student) — ARC Centre of Excellence for All Sky Astrophysics in 3 Dimensions (ASTRO 3D), Australia
+                            <span class="muted">(2020–2024)</span>
+                        </p>
+                    </section>
+
+                    <section class="section">
+                        <h2>Conference Talks</h2>
+                        <ul>
+                            <li>
+                                <strong>Exploring the intrinsic scatter of the star-forming galaxy main sequence at redshift 0.5 to 3.0</strong><br>
+                                R. Huang — 2022 ASTRO 3D Science Meeting, Burnley, VIC, Australia <span class="muted">(Talk; June 2022)</span>
+                            </li>
+                            <li>
+                                <strong>Sparkler Talk (1-min): Intrinsic scatter of the star-forming galaxy main sequence</strong><br>
+                                R. Huang — 2023 ASTRO 3D Science Meeting, Freemantle, WA, Australia <span class="muted">(Talk; June 2023)</span>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section class="section">
+                        <h2>Grants &amp; Awards</h2>
+                        <ul>
+                            <li><strong>UWA Data Institute Awards 2025 Travel Grants</strong>: 2000 AUD <span class="muted">(December 2025)</span></li>
+                            <li><strong>ASTRO 3D travel funds</strong>: 100 AUD <span class="muted">(June 2022)</span></li>
+                            <li><strong>ASTRO 3D travel funds</strong>: 1500 AUD <span class="muted">(June 2023)</span></li>
+                        </ul>
+                    </section>
+
+                    <section class="section">
+                        <h2>Language</h2>
+                        <p>
+                            <strong>Pearson Test of English (PTE) Academic</strong><br>
+                            Overall 81: Listening 83, Reading 74, Speaking 90, Writing 80 <span class="muted">(Australia, 03 Jul 2024)</span>
+                        </p>
+                    </section>
+
+                    <section class="section">
+                        <h2>Professional Skills</h2>
+                        <ul>
+                            <li>Advanced experience with large astrophysical datasets (integral-field spectroscopy, simulations) and statistical modelling.</li>
+                            <li>Daily user of Python (NumPy, SciPy, Astropy, Matplotlib, Jupyter), with HPC workflows and automated analysis pipelines.</li>
+                            <li>Comfortable with Mathematica, MATLAB, IDL, Emacs, DS9, ImageJ, LaTeX/BibTeX, Markdown, and office suites.</li>
+                        </ul>
+                    </section>
+
+                    <section class="section">
+                        <h2>Download</h2>
+                        <p>
+                            Latest CV source: <a href="HRJ2026.tex">HRJ2026.tex</a>
+                        </p>
+                    </section>
+                </div>
+
+                <div id="gallery" class="tab-content">
+                    <section class="section">
+                        <h2>Photo Gallery</h2>
+                        <div class="photo-gallery">
+                            <div class="photo-item">
+                                <img src="https://drive.google.com/thumbnail?id=1p4SrSEHQNugS92XAYv_UC8SZqNH_RKCn&sz=w1000" alt="With Supervisor Dr. Andrew Battisti in 2024">
+                                <p class="muted">With Supervisor Dr. Andrew Battisti (2024)</p>
+                            </div>
+                            <div class="photo-item">
+                                <img src="https://drive.google.com/thumbnail?id=1P6WPIIPEg0EdnBMNJER8QINMKzpzCG9_&sz=w1000" alt="With Prof. Brian Schmidt in 2022 Honours Graduation">
+                                <p class="muted">With Prof. Brian Schmidt (Honours graduation, 2022)</p>
+                            </div>
+                            <div class="photo-item">
+                                <img src="https://drive.google.com/thumbnail?id=1leYZKwlD40kHcU79su7x44-ZUWmPCv9F&sz=w1000" alt="Rongjun Huang in 2020">
+                                <p class="muted">Me (2020)</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+
+            <footer>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/rongjun-huang/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://orcid.org/0000-0002-6646-8365" target="_blank" rel="noopener" aria-label="ORCID"><i class="fab fa-orcid"></i></a>
+                    <a href="https://github.com/Rongjun-ANU" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://astro3d.org.au/" target="_blank" rel="noopener" aria-label="ASTRO 3D"><i class="fas fa-meteor"></i></a>
+                    <a href="https://scholar.google.com/citations?user=ziERchkAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+                    <a href="https://arxiv.org/search/?query=Huang%2C+Rongjun&searchtype=author&abstracts=show&order=-announced_date_first&size=50" target="_blank" rel="noopener" aria-label="arXiv"><i class="fas fa-file-alt"></i></a>
+                </div>
+                <p>
+                    Contact: Rongjun.Huang@icrar.org | Rongjun.Huang@research.uwa.edu.au | Astro@Rongjun-Huang.com
                 </p>
-                <h2>Education</h2>
-                <ul>
-                    <li><strong>M.Sc</strong> - <a href="https://programsandcourses.anu.edu.au/program/vscaa" target="_blank">Master of Science (Advanced) in Astronomy and Astrophysics</a> </p>
-                        <a href="https://rsaa.anu.edu.au/" target="_blank">Research School of Astronomy & Astrophysics</a>, <a href="https://www.anu.edu.au/" target="_blank">The Australian National University</a>, July 2024</li>
-                    <li><strong>H.Sc</strong> - <a href="https://programsandcourses.anu.edu.au/program/hsc" target="_blank">Bachelor of Science (Honours) - Astronomy and Astrophysics</a> </p>
-                        <a href="https://rsaa.anu.edu.au/" target="_blank">Research School of Astronomy & Astrophysics</a>, <a href="https://www.anu.edu.au/" target="_blank">The Australian National University</a>, December 2022</li>
-                    <li><strong>B.Sc</strong> - <a href="https://programsandcourses.anu.edu.au/program/bsc" target="_blank">Bachelor of Science - Astronomy and Astrophysics</a> </p>
-                        <a href="https://rsaa.anu.edu.au/" target="_blank">Research School of Astronomy & Astrophysics</a>, <a href="https://www.anu.edu.au/" target="_blank">The Australian National University</a>, June 2021</li>
-                </ul>
-            </section>
-        </div>
+            </footer>
 
-        <div id="research" class="tab-content">
-            <section class="section">
-                <h2>Research Projects</h2>
-                <ul>
-                    <li><strong>Predoctoral Research (11/24-) Supervisors: <a href="https://chongchonghe.github.io/">Dr. ChongChong He</a></strong>
-                        <br>Developing a post-processing pipeline for QUOKKA simulation</li>
-                    <li><strong>ASTR8010 Master Research (07/23--05/24) Supervisors: <a href="https://rsaa.anu.edu.au/people/dr-aditi-vijayan">Dr. Aditi Vijayan</a>, <a href="https://www.mso.anu.edu.au/~krumholz/">Prof. Mark Krumholz</a> </strong>
-                        <br>Negative Metallicity Gradient in Galactic Outflows Based on QED Simulations</li>
-                    <li><strong>ASTR4005 Honours Research (02/22--10/22) Supervisors: Supervisor: <a href="https://sites.google.com/view/ajbattisti/home">Dr. Andrew Battisti</a>, <a href="https://sites.google.com/view/grasha">Dr. Kathryn Grasha</a>, <a href="https://research-repository.uwa.edu.au/en/persons/elisabete-lima-da-cunha-2">A/Prof. Elisabete da Cunha </a></strong>
-                        <br>Exploring the Intrinsic Scatter of the Star-Forming Galaxy Main Sequence at Redshift 0.5 to 3.0</li>
-                    <li><strong>ASTR3005 Summer Research (12/20--02/21) Supervisors: <a href="https://sites.google.com/view/ajbattisti/home">Dr. Andrew Battisti</a>, <a href="https://sites.google.com/view/grasha">Dr. Kathryn Grasha</a></strong>
-                        <br>Using MAGPHYS+photo-z to Characterise the Properties of Star-Forming Galaxies</li>
-                </ul>
-            </section>
-        </div>
-        
-        <div id="publications" class="tab-content">
-            <section class="section">
-                <h2>First-Author Publications</h2>
-                <ul>
-                    <li>
-                        <strong>QUOKKA-based understanding of outflows (QED) - II. X-ray metallicity gradients as a signature of galactic wind metal loading</strong>
-                        <br>Rongjun Huang, Aditi Vijayan, Mark R. Krumholz
-                        <br>MNRAS (in prep.)
-                        <br><a href="https://doi.org/10.48550/arXiv.2410.14376" target="_blank">Available at arXiv now</a>
-                    </li>
-                    <li>
-                        <strong>Exploring the Intrinsic Scatter of the Star-Forming Galaxy Main Sequence at Redshift 0.5 to 3.0</strong>
-                        <br>Rongjun Huang, Andrew J. Battisti, Kathryn Grasha, Elisabete da Cunha, Claudia del P Lagos, Sarah K. Leslie & Emily Wisnioski
-                        <br>MNRAS (Published, Volume 520, Issue 1, March 2023, Pages 446–460)
-                        <br><a href="https://doi.org/10.1093/mnras/stad108" target="_blank">DOI: 10.1093/mnras/stad108</a>
-                        <br><a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.520..446H/abstract" target="_blank">NASA ADS</a>
-                    </li>
-                </ul>
-            </section>
-        </div>
-        
-        <div id="experience" class="tab-content">
-            <section class="section">
-                <h2>Internships</h2>
-                <p><strong>The Stability of the WiFeS Instrument on the ANU 2.3-Metre Robotic Telescope</strong></p>
-                <p>Supervisor: <a href="https://rsaa.anu.edu.au/people/associate-professor-chris-lidman" target="_blank">A/Prof. Chris Lidman</a></p>
-                <p>ANU 2.3m Telescope, Siding Spring Observatory (SSO), NSW, Australia (01/29/2024--02/16/2024)</p>
-            </section>
-            <section class="section">
-                <h2>Professional Affiliations</h2>
-                <p>Member (Student) -- ARC Centre of Excellence for All Sky Astrophysics in 3 Dimensions (ASTRO 3D), Australia</p>
-            </section>
-            <section class="section">
-                <h2>Conference Talks</h2>
-                <ul>
-                    <li><strong>Exploring the Intrinsic Scatter of the Star-Forming Galaxy Main Sequence at Redshift 0.5 to 3.0</strong> R. Huang. 2022 ASTRO 3D Science Meeting, Burnley, VIC, Australia (Talk; June 2022).</li>
-                    <li><strong>Sparkler Talk (1-min): Intrinsic Scatter of the Star-Forming Galaxy Main Sequence</strong> R. Huang. 2023 ASTRO 3D Science Meeting, Freemantle, WA, Australia (Talk; June 2023).</li>
-                </ul>
-            </section>
-            <section class="section">
-                <h2>Observing Experience</h2>
-                <ul>
-                    <li><strong>Extremely Metal Poor Stars in Milky Way</strong> ANU 2.3m Telescope, Siding Spring Observatory (SSO), NSW, Australia (September 2019; 3 nights)</li>
-                    <li><strong>The GALactic Archaeology with HERMES (GALAH) survey in 2024A</strong> Anglo-Australian Telescope (AAT), Siding Spring Observatory (SSO), NSW, Australia (July 2024 [remote observing through Mount Stromlo Observatory (MSO) observation room])</li>
-                </ul>
-            </section>
-        </div>
-        
+            <script>
+                // Tabs
+                const tabLinks = document.querySelectorAll('.tab-link');
+                const tabPanels = document.querySelectorAll('.tab-content');
 
-        <div id="gallery" class="tab-content">
-            <section class="section">
-                <h2>Photo Gallery</h2>
-                <div class="photo-gallery">
-                    <div class="photo-item">
-                        <img src="https://drive.google.com/thumbnail?id=1p4SrSEHQNugS92XAYv_UC8SZqNH_RKCn&sz=w1000" alt="With Supervisor Dr. Andrew Battisti in 2024">
-                        <p>With Supervisor Dr. Andrew Battisti in 2024</p>
-                    </div>
-                    <div class="photo-item">
-                        <img src="https://drive.google.com/thumbnail?id=1P6WPIIPEg0EdnBMNJER8QINMKzpzCG9_&sz=w1000" alt="With Prof. Brian Schmidt in 2022 Honours Graduation">
-                        <p>With Prof. Brian Schmidt in 2022 Honours Graduation</p>
-                    </div>
-                    <div class="photo-item">
-                        <img src="https://drive.google.com/thumbnail?id=1leYZKwlD40kHcU79su7x44-ZUWmPCv9F&sz=w1000" alt="Me in 2020">
-                        <p>Me in 2020</p>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
+                function activateTab(tabId) {
+                    tabPanels.forEach(panel => panel.classList.remove('active'));
+                    const target = document.getElementById(tabId);
+                    if (target) target.classList.add('active');
+                }
 
-    <footer>
-        <div class="social-links">
-            <a href="https://www.linkedin.com/in/rongjun-huang/" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="https://orcid.org/0000-0002-6646-8365" target="_blank"><i class="fab fa-orcid"></i></a>
-            <a href="https://github.com/Rongjun-ANU" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="https://rsaa.anu.edu.au/people/mr-rongjun-huang" target="_blank"><i class="fas fa-university"></i></a>
-            <a href="https://astro3d.org.au/member/rongjunhuang/" target="_blank"><i class="fas fa-meteor"></i></a>
-            <a href="https://scholar.google.com/citations?user=ziERchkAAAAJ&hl=en&oi=ao" target="_blank"><i class="fas fa-graduation-cap"></i></a>
-            <a href="https://arxiv.org/search/?query=Huang%2C+Rongjun&searchtype=author&abstracts=show&order=-announced_date_first&size=50" target="_blank"><i class="fas fa-file-alt"></i></a>
-        </div>
-        <p>Contact: Rongjun.Huang@alumni.anu.edu.au | Astro@Rongjun-Huang.com</p>
-    </footer>
-
-    <script>
-        // Tab functionality
-        document.querySelectorAll('.tab-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const tabId = link.getAttribute('data-tab');
-                document.querySelectorAll('.tab-content').forEach(tab => {
-                    tab.classList.remove('active');
+                tabLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const tabId = link.getAttribute('data-tab');
+                        if (!tabId) return;
+                        activateTab(tabId);
+                        history.replaceState(null, '', `#${tabId}`);
+                    });
                 });
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
 
-        // Starfield animation
-        const canvas = document.getElementById('stars-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
+                // Initial tab from hash
+                if (location.hash && document.getElementById(location.hash.slice(1))) {
+                    activateTab(location.hash.slice(1));
+                }
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+                // Starfield
+                const canvas = document.getElementById('stars-canvas');
+                const ctx = canvas.getContext('2d');
+                let stars = [];
 
-        function createStars() {
-            stars = [];
-            for (let i = 0; i < 100; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5,
-                    vx: Math.floor(Math.random() * 50) - 25,
-                    vy: Math.floor(Math.random() * 50) - 25
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+
+                function createStars() {
+                    const count = Math.min(160, Math.floor((window.innerWidth * window.innerHeight) / 12000));
+                    stars = Array.from({ length: count }, () => ({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        radius: Math.random() * 1.3 + 0.2,
+                        vx: (Math.random() - 0.5) * 0.35,
+                        vy: (Math.random() - 0.5) * 0.35,
+                        alpha: Math.random() * 0.6 + 0.2,
+                    }));
+                }
+
+                function drawStars() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    for (const star of stars) {
+                        ctx.beginPath();
+                        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                        ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+                        ctx.fill();
+                    }
+                }
+
+                function updateStars() {
+                    for (const star of stars) {
+                        star.x += star.vx;
+                        star.y += star.vy;
+                        if (star.x < 0) star.x = canvas.width;
+                        if (star.x > canvas.width) star.x = 0;
+                        if (star.y < 0) star.y = canvas.height;
+                        if (star.y > canvas.height) star.y = 0;
+                    }
+                }
+
+                function animateStars() {
+                    drawStars();
+                    updateStars();
+                    requestAnimationFrame(animateStars);
+                }
+
+                window.addEventListener('resize', () => {
+                    resizeCanvas();
+                    createStars();
                 });
+
+                resizeCanvas();
+                createStars();
+                animateStars();
+
+                // Typing effect
+                const introText = "PhD student at ICRAR/UWA • Galaxy evolution • Star formation • Virgo Cluster";
+                const typedEl = document.getElementById('typed-intro');
+                let idx = 0;
+
+                function typeIntro() {
+                    if (!typedEl) return;
+                    if (idx < introText.length) {
+                        typedEl.textContent += introText.charAt(idx);
+                        idx += 1;
+                        setTimeout(typeIntro, 18);
+                    }
+                }
+
+                window.addEventListener('load', typeIntro);
+            </script>
+        </body>
+        </html>
             }
-        }
-
-        function drawStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'white';
-            ctx.strokeStyle = 'white';
-            for (let i = 0; i < stars.length; i++) {
-                let star = stars[i];
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.stroke();
-            }
-        }
-
-        function updateStars() {
-            for (let i = 0; i < stars.length; i++) {
-                let star = stars[i];
-                star.x += star.vx / 30;
-                star.y += star.vy / 30;
-                if (star.x < 0 || star.x > canvas.width) star.vx = -star.vx;
-                if (star.y < 0 || star.y > canvas.height) star.vy = -star.vy;
-            }
-        }
-
-        function animateStars() {
-            drawStars();
-            updateStars();
-            requestAnimationFrame(animateStars);
-        }
-
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            createStars();
-        });
-
-        resizeCanvas();
-        createStars();
-        animateStars();
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Typing effect for the intro text
-        const introText = "Exploring the universe, one galaxy at a time.";
-        let i = 0;
-        const speed = 50; // Typing speed in milliseconds
-
-        function typeIntro() {
-            if (i < introText.length) {
-                document.getElementById("typed-intro").innerHTML += introText.charAt(i);
-                i++;
-                setTimeout(typeIntro, speed);
-            }
-        }
-
-        // Start typing effect when the page loads
-        window.onload = typeIntro;
-    </script>
-</body>
-</html>
