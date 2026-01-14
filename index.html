@@ -250,55 +250,6 @@
                     padding: 170px 0 28px;
                 }
 
-                .subnav {
-                    position: sticky;
-                    top: 92px;
-                    z-index: 950;
-                    margin: 14px 0 22px;
-                    display: flex;
-                    justify-content: center;
-                }
-
-                .segmented {
-                    display: inline-flex;
-                    gap: 6px;
-                    padding: 6px;
-                    border-radius: 999px;
-                    border: 1px solid rgba(255, 255, 255, 0.14);
-                    background: rgba(10, 10, 18, 0.42);
-                    backdrop-filter: blur(14px);
-                    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.35);
-                }
-
-                .segmented a {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 8px;
-                    padding: 10px 12px;
-                    border-radius: 999px;
-                    text-decoration: none;
-                    text-transform: uppercase;
-                    letter-spacing: 0.14em;
-                    font-weight: 750;
-                    font-size: 0.72rem;
-                    color: rgba(246, 247, 255, 0.80);
-                    border: 1px solid transparent;
-                    transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
-                }
-
-                .segmented a:hover {
-                    transform: translateY(-1px);
-                    background: rgba(255, 255, 255, 0.06);
-                    border-color: rgba(255, 255, 255, 0.10);
-                }
-
-                .segmented a.active {
-                    color: rgba(246, 247, 255, 0.96);
-                    background: linear-gradient(135deg, rgba(199, 176, 255, 0.18), rgba(3, 252, 186, 0.08));
-                    border-color: rgba(199, 176, 255, 0.35);
-                    box-shadow: 0 0 24px rgba(199, 176, 255, 0.14);
-                }
-
                 .hero {
                     padding: 18px 0 12px;
                     margin-bottom: 14px;
@@ -533,9 +484,6 @@
                     main {
                         padding-top: 195px;
                     }
-                    .subnav {
-                        top: 110px;
-                    }
                     .photo-gallery {
                         grid-template-columns: 1fr;
                     }
@@ -586,16 +534,6 @@
                         <a class="btn" href="mailto:Rongjun.Huang@icrar.org"><i class="fas fa-envelope"></i> Email</a>
                     </div>
                 </section>
-
-                <div class="subnav" aria-label="Sections">
-                    <div class="segmented" role="navigation">
-                        <a href="#about" class="tab-link" aria-label="About section"><i class="fas fa-user"></i> About</a>
-                        <a href="#research" class="tab-link" aria-label="Research section"><i class="fas fa-atom"></i> Research</a>
-                        <a href="#publications" class="tab-link" aria-label="Publications section"><i class="fas fa-book"></i> Papers</a>
-                        <a href="#experience" class="tab-link" aria-label="Experience section"><i class="fas fa-briefcase"></i> CV</a>
-                        <a href="#gallery" class="tab-link" aria-label="Gallery section"><i class="fas fa-images"></i> Gallery</a>
-                    </div>
-                </div>
 
                 <div id="about" class="tab-content">
                     <section class="section reveal">
