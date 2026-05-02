@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Rongjun Huang (黄镕钧) — PhD student at ICRAR/UWA. Research interests: galaxy evolution, star formation, and environmental effects in clusters.">
-    <meta name="keywords" content="Rongjun Huang, 黄镕钧, Astrophysics, Astronomy, Galaxy evolution, Star formation, ICRAR, UWA, ANU">
+    <meta name="description" content="Rongjun Huang (黄镕钧) — PhD student at ICRAR/UWA studying galaxy evolution, spatially-resolved star formation, ISM diagnostics, Virgo Cluster environments, and IFS datacubes.">
+    <meta name="keywords" content="Rongjun Huang, 黄镕钧, Astrophysics, Astronomy, Galaxy evolution, Star formation, IFS datacube, MAUVE-MUSE, Virgo Cluster, ICRAR, UWA, ANU">
     <meta name="author" content="Rongjun Huang">
 
             <title>Rongjun Huang (黄镕钧) — Astrophysics</title>
 
             <link rel="icon" href="data:,">
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-            <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&amp;family=Roboto:wght@300;400;700&amp;display=swap" rel="stylesheet">
 
             <style>
                 :root {
@@ -22,6 +22,11 @@
                     --galaxy-color: rgba(10, 10, 18, 0.66);
                     --neon-color: rgba(199, 176, 255, 0.95);
                     --accent-cyan: rgba(3, 252, 186, 0.80);
+                    --accent-blue: rgba(90, 165, 255, 0.9);
+                    --accent-amber: rgba(255, 207, 111, 0.92);
+                    --accent-rose: rgba(255, 117, 170, 0.82);
+                    --oxygen-green: rgba(103, 255, 191, 0.88);
+                    --hydrogen-red: rgba(255, 94, 130, 0.82);
                     --muted: rgba(246, 247, 255, 0.68);
                 }
 
@@ -111,8 +116,19 @@
                     opacity: 0.75;
                 }
 
+                #datacube-canvas {
+                    position: fixed;
+                    inset: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: -1;
+                    opacity: 0.45;
+                    mix-blend-mode: screen;
+                    pointer-events: none;
+                }
+
                 .container {
-                    width: min(1100px, 92%);
+                    width: min(1180px, 92%);
                     margin: 0 auto;
                 }
 
@@ -124,7 +140,7 @@
                     content: "";
                     position: absolute;
                     inset: -40px;
-                    background: radial-gradient(700px circle at var(--mx, 50%) var(--my, 30%), rgba(215, 156, 255, 0.16), transparent 55%);
+                    background: radial-gradient(circle 700px at var(--mx, 50%) var(--my, 30%), rgba(215, 156, 255, 0.16), transparent 55%);
                     opacity: 0.85;
                     filter: blur(10px);
                     pointer-events: none;
@@ -251,8 +267,15 @@
                 }
 
                 .hero {
-                    padding: 18px 0 12px;
-                    margin-bottom: 14px;
+                    padding: 18px 0 22px;
+                    margin-bottom: 18px;
+                }
+
+                .astro-hud {
+                    display: grid;
+                    grid-template-columns: minmax(0, 1.06fr) minmax(300px, 0.94fr);
+                    gap: 28px;
+                    align-items: center;
                 }
 
                 .hero-eyebrow {
@@ -329,6 +352,219 @@
                     max-width: 72ch;
                 }
 
+                .hero-tags,
+                .signal-tags {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    margin-top: 14px;
+                }
+
+                .hero-tags span,
+                .signal-tags span {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 7px;
+                    min-height: 32px;
+                    padding: 6px 10px;
+                    border-radius: 999px;
+                    border: 1px solid rgba(255, 255, 255, 0.14);
+                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025));
+                    box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.035);
+                    color: rgba(246, 247, 255, 0.82);
+                    font-size: 0.88rem;
+                }
+
+                .datacube-visual {
+                    position: relative;
+                    min-height: 420px;
+                    perspective: 1100px;
+                    isolation: isolate;
+                }
+
+                .datacube-visual::before {
+                    content: "";
+                    position: absolute;
+                    inset: 7% 4% 4% 1%;
+                    border: 1px solid rgba(103, 255, 191, 0.16);
+                    border-radius: 8px;
+                    background:
+                        linear-gradient(rgba(103, 255, 191, 0.06) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(103, 255, 191, 0.06) 1px, transparent 1px),
+                        radial-gradient(circle at 48% 45%, rgba(255, 207, 111, 0.16), transparent 22%),
+                        radial-gradient(circle at 52% 52%, rgba(255, 94, 130, 0.12), transparent 30%);
+                    background-size: 34px 34px, 34px 34px, 100% 100%, 100% 100%;
+                    filter: drop-shadow(0 0 28px rgba(3, 252, 186, 0.08));
+                    transform: rotate(-2deg);
+                    opacity: 0.82;
+                }
+
+                .galaxy-disc {
+                    position: absolute;
+                    width: min(62%, 330px);
+                    aspect-ratio: 1;
+                    right: 13%;
+                    top: 11%;
+                    border-radius: 50%;
+                    background:
+                        radial-gradient(circle at 50% 50%, rgba(255, 245, 210, 0.94) 0 3%, rgba(255, 207, 111, 0.8) 4% 9%, transparent 13%),
+                        conic-gradient(from 18deg, transparent 0 8%, rgba(103, 255, 191, 0.65) 10% 16%, transparent 19% 33%, rgba(90, 165, 255, 0.48) 36% 43%, transparent 46% 58%, rgba(255, 94, 130, 0.46) 61% 69%, transparent 72% 100%),
+                        radial-gradient(ellipse at 50% 50%, rgba(165, 209, 255, 0.22), rgba(215, 156, 255, 0.13) 34%, transparent 62%);
+                    box-shadow: 0 0 42px rgba(255, 207, 111, 0.18), inset 0 0 55px rgba(3, 252, 186, 0.07);
+                    transform: rotateX(62deg) rotateZ(-27deg);
+                    animation: galaxyDrift 16s ease-in-out infinite alternate;
+                }
+
+                .galaxy-disc::before,
+                .galaxy-disc::after {
+                    content: "";
+                    position: absolute;
+                    inset: 9%;
+                    border-radius: 50%;
+                    border: 1px dashed rgba(255, 255, 255, 0.18);
+                    transform: rotate(18deg);
+                }
+
+                .galaxy-disc::after {
+                    inset: 24%;
+                    border-color: rgba(103, 255, 191, 0.22);
+                    transform: rotate(-15deg);
+                }
+
+                @keyframes galaxyDrift {
+                    from { transform: rotateX(62deg) rotateZ(-31deg) translate3d(-4px, 0, 0); }
+                    to { transform: rotateX(62deg) rotateZ(-18deg) translate3d(8px, -5px, 0); }
+                }
+
+                .cube-frame {
+                    position: absolute;
+                    left: 1%;
+                    top: 18%;
+                    width: min(47%, 260px);
+                    aspect-ratio: 1;
+                    transform-style: preserve-3d;
+                    transform: rotateX(61deg) rotateZ(-36deg);
+                    animation: cubeFloat 11s ease-in-out infinite alternate;
+                }
+
+                .cube-frame span {
+                    position: absolute;
+                    inset: 0;
+                    border: 1px solid rgba(103, 255, 191, 0.30);
+                    border-radius: 8px;
+                    background:
+                        linear-gradient(rgba(103, 255, 191, 0.12) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(103, 255, 191, 0.12) 1px, transparent 1px),
+                        radial-gradient(circle at 54% 46%, rgba(255, 207, 111, 0.14), transparent 32%);
+                    background-size: 26px 26px, 26px 26px, 100% 100%;
+                    box-shadow: 0 0 26px rgba(3, 252, 186, 0.08), inset 0 0 28px rgba(3, 252, 186, 0.05);
+                }
+
+                .cube-frame span:nth-child(1) { transform: translateZ(0); opacity: 0.95; }
+                .cube-frame span:nth-child(2) { transform: translateZ(42px); opacity: 0.66; }
+                .cube-frame span:nth-child(3) { transform: translateZ(84px); opacity: 0.42; }
+                .cube-frame span:nth-child(4) { transform: translateZ(126px); opacity: 0.26; }
+
+                @keyframes cubeFloat {
+                    from { transform: rotateX(61deg) rotateZ(-39deg) translate3d(0, 0, 0); }
+                    to { transform: rotateX(58deg) rotateZ(-28deg) translate3d(10px, -6px, 10px); }
+                }
+
+                .spaxel-grid {
+                    position: absolute;
+                    right: 3%;
+                    bottom: 8%;
+                    width: min(50%, 300px);
+                    display: grid;
+                    grid-template-columns: repeat(9, 1fr);
+                    gap: 5px;
+                    transform: rotate(-1deg);
+                }
+
+                .spaxel-grid i {
+                    display: block;
+                    aspect-ratio: 1;
+                    border-radius: 2px;
+                    border: 1px solid rgba(255, 255, 255, 0.11);
+                    background: rgba(255, 255, 255, 0.035);
+                    animation: spaxelPulse 3.6s ease-in-out infinite;
+                    animation-delay: calc(var(--i) * -0.045s);
+                }
+
+                .spaxel-grid i:nth-child(3n) { background: rgba(103, 255, 191, 0.22); }
+                .spaxel-grid i:nth-child(4n) { background: rgba(255, 207, 111, 0.18); }
+                .spaxel-grid i:nth-child(5n) { background: rgba(255, 94, 130, 0.17); }
+
+                @keyframes spaxelPulse {
+                    0%, 100% { opacity: 0.32; transform: scale(0.92); }
+                    45% { opacity: 0.9; transform: scale(1.02); }
+                }
+
+                .spectrum-readout {
+                    position: absolute;
+                    left: 5%;
+                    right: 4%;
+                    bottom: 0;
+                    padding: 13px 14px;
+                    border-radius: 8px;
+                    border: 1px solid rgba(255, 255, 255, 0.15);
+                    background: rgba(4, 8, 19, 0.66);
+                    backdrop-filter: blur(10px);
+                    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.36);
+                }
+
+                .spectrum-readout strong {
+                    display: block;
+                    margin-bottom: 8px;
+                    color: rgba(246, 247, 255, 0.9);
+                    font-size: 0.88rem;
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                }
+
+                .spectrum-lines {
+                    height: 56px;
+                    border-radius: 6px;
+                    overflow: hidden;
+                    position: relative;
+                    background:
+                        linear-gradient(90deg, rgba(90, 165, 255, 0.05), rgba(103, 255, 191, 0.07), rgba(255, 207, 111, 0.08), rgba(255, 94, 130, 0.06)),
+                        repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 1px, transparent 1px 22px);
+                }
+
+                .spectrum-lines::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background:
+                        linear-gradient(90deg, transparent 9%, var(--oxygen-green) 10%, transparent 11%),
+                        linear-gradient(90deg, transparent 33%, rgba(90, 165, 255, 0.8) 34%, transparent 35%),
+                        linear-gradient(90deg, transparent 57%, var(--accent-amber) 58%, transparent 59%),
+                        linear-gradient(90deg, transparent 78%, var(--hydrogen-red) 79%, transparent 80%);
+                    filter: blur(0.3px) drop-shadow(0 0 8px rgba(103, 255, 191, 0.34));
+                    animation: spectrumScan 4.4s linear infinite;
+                }
+
+                .spectrum-lines::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+                    width: 22%;
+                    transform: translateX(-120%);
+                    animation: sweep 4.4s linear infinite;
+                }
+
+                @keyframes spectrumScan {
+                    from { opacity: 0.65; }
+                    50% { opacity: 1; }
+                    to { opacity: 0.65; }
+                }
+
+                @keyframes sweep {
+                    to { transform: translateX(560%); }
+                }
+
                 .tab-content {
                     display: block;
                     animation: none;
@@ -357,9 +593,10 @@
                     border: 1px solid var(--panel-border);
                     margin: 0 0 18px;
                     padding: 26px 26px;
-                    border-radius: 14px;
+                    border-radius: 8px;
                     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
                     position: relative;
+                    overflow: hidden;
                     transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
                 }
 
@@ -367,10 +604,27 @@
                     content: "";
                     position: absolute;
                     inset: 0;
-                    border-radius: 14px;
+                    border-radius: 8px;
                     background: radial-gradient(700px 220px at 50% 0%, rgba(199, 176, 255, 0.11), transparent 60%);
                     opacity: 0.7;
                     pointer-events: none;
+                }
+
+                .section::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    background:
+                        linear-gradient(90deg, transparent, rgba(103, 255, 191, 0.045), transparent),
+                        repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 24px);
+                    opacity: 0.42;
+                    pointer-events: none;
+                    mask-image: linear-gradient(180deg, black, transparent 72%);
+                }
+
+                .section > * {
+                    position: relative;
+                    z-index: 1;
                 }
 
                 .section:hover {
@@ -425,6 +679,171 @@
                     font-size: 0.92rem;
                 }
 
+                .science-grid,
+                .research-dashboard {
+                    display: grid;
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                    gap: 12px;
+                    margin-top: 16px;
+                }
+
+                .science-card,
+                .paper,
+                .timeline-item,
+                .code-item,
+                .award-item {
+                    border: 1px solid rgba(255, 255, 255, 0.13);
+                    border-radius: 8px;
+                    background:
+                        linear-gradient(135deg, rgba(255, 255, 255, 0.078), rgba(255, 255, 255, 0.025)),
+                        radial-gradient(circle at 14% 8%, rgba(103, 255, 191, 0.09), transparent 42%);
+                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+                }
+
+                .science-card {
+                    padding: 18px;
+                    min-height: 180px;
+                }
+
+                .science-card i {
+                    display: inline-grid;
+                    place-items: center;
+                    width: 38px;
+                    height: 38px;
+                    margin-bottom: 12px;
+                    border-radius: 8px;
+                    color: rgba(6, 8, 21, 0.92);
+                    background: linear-gradient(135deg, var(--oxygen-green), var(--accent-amber));
+                    box-shadow: 0 0 24px rgba(103, 255, 191, 0.18);
+                }
+
+                .science-card h3,
+                .paper h3,
+                .timeline-item h3,
+                .code-item h3,
+                .award-item h3 {
+                    margin: 0 0 8px;
+                    font-size: 1rem;
+                    line-height: 1.25;
+                    color: rgba(255, 255, 255, 0.94);
+                }
+
+                .science-card p,
+                .paper p,
+                .timeline-item p,
+                .code-item p,
+                .award-item p {
+                    margin: 0;
+                    color: rgba(246, 247, 255, 0.72);
+                }
+
+                .pipeline-map {
+                    display: grid;
+                    grid-template-columns: repeat(4, minmax(0, 1fr));
+                    gap: 10px;
+                    margin-top: 16px;
+                }
+
+                .pipeline-step {
+                    position: relative;
+                    padding: 14px 12px;
+                    min-height: 92px;
+                    border: 1px solid rgba(103, 255, 191, 0.20);
+                    border-radius: 8px;
+                    background: rgba(3, 252, 186, 0.045);
+                }
+
+                .pipeline-step:not(:last-child)::after {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    right: -10px;
+                    width: 10px;
+                    height: 1px;
+                    background: linear-gradient(90deg, rgba(103, 255, 191, 0.55), transparent);
+                }
+
+                .pipeline-step small {
+                    display: block;
+                    margin-bottom: 5px;
+                    color: var(--accent-amber);
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                    font-size: 0.72rem;
+                }
+
+                .paper-list,
+                .timeline,
+                .code-grid,
+                .award-grid {
+                    display: grid;
+                    gap: 12px;
+                    margin-top: 14px;
+                }
+
+                .paper {
+                    display: grid;
+                    grid-template-columns: auto minmax(0, 1fr);
+                    gap: 14px;
+                    padding: 16px;
+                }
+
+                .paper-rank {
+                    display: inline-grid;
+                    place-items: center;
+                    width: 38px;
+                    height: 38px;
+                    border-radius: 50%;
+                    border: 1px solid rgba(255, 255, 255, 0.16);
+                    background: rgba(255, 255, 255, 0.055);
+                    color: var(--accent-amber);
+                    font-family: 'Orbitron', sans-serif;
+                    font-size: 0.9rem;
+                }
+
+                .paper-meta,
+                .timeline-meta {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    margin-top: 9px;
+                }
+
+                .paper-meta span,
+                .timeline-meta span {
+                    padding: 4px 8px;
+                    border-radius: 999px;
+                    border: 1px solid rgba(255, 255, 255, 0.12);
+                    color: rgba(246, 247, 255, 0.7);
+                    font-size: 0.82rem;
+                }
+
+                .timeline {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .timeline-item,
+                .code-item,
+                .award-item {
+                    padding: 16px;
+                }
+
+                .code-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .award-grid {
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                }
+
+                .inline-note {
+                    margin-top: 14px;
+                    padding: 12px 14px;
+                    border-left: 3px solid rgba(103, 255, 191, 0.55);
+                    background: rgba(103, 255, 191, 0.045);
+                    color: rgba(246, 247, 255, 0.76);
+                }
+
                 .photo-gallery {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
@@ -435,7 +854,7 @@
                 }
                 .photo-item img {
                     width: 100%;
-                    border-radius: 12px;
+                    border-radius: 8px;
                     border: 1px solid rgba(3, 252, 186, 0.25);
                     transition: transform 0.2s ease, box-shadow 0.2s ease;
                 }
@@ -469,12 +888,44 @@
                 }
 
                 @media (max-width: 900px) {
+                    .astro-hud {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .datacube-visual {
+                        min-height: 360px;
+                    }
+
+                    .science-grid,
+                    .research-dashboard,
+                    .pipeline-map,
+                    .timeline,
+                    .code-grid,
+                    .award-grid {
+                        grid-template-columns: 1fr 1fr;
+                    }
+
                     .photo-gallery {
                         grid-template-columns: repeat(2, 1fr);
                     }
                 }
 
                 @media (max-width: 600px) {
+                    .header-content {
+                        align-items: flex-start;
+                        flex-direction: column;
+                    }
+
+                    nav ul {
+                        justify-content: flex-start;
+                        gap: 8px;
+                    }
+
+                    nav a {
+                        font-size: 0.76rem;
+                        padding: 7px 8px;
+                    }
+
                     header h1 {
                         font-size: 1.25rem;
                     }
@@ -482,7 +933,38 @@
                         display: none;
                     }
                     main {
-                        padding-top: 195px;
+                        padding-top: 230px;
+                    }
+
+                    .hero-title {
+                        font-size: clamp(1.9rem, 12vw, 2.65rem);
+                    }
+
+                    .datacube-visual {
+                        min-height: 315px;
+                    }
+
+                    .cube-frame {
+                        width: 52%;
+                    }
+
+                    .galaxy-disc {
+                        width: 68%;
+                        right: 2%;
+                    }
+
+                    .science-grid,
+                    .research-dashboard,
+                    .pipeline-map,
+                    .timeline,
+                    .code-grid,
+                    .award-grid,
+                    .paper {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .pipeline-step:not(:last-child)::after {
+                        display: none;
                     }
                     .photo-gallery {
                         grid-template-columns: 1fr;
@@ -493,12 +975,13 @@
 
         <body>
             <canvas id="stars-canvas"></canvas>
+            <canvas id="datacube-canvas"></canvas>
 
             <header>
                 <div class="container header-content">
                     <div class="profile-info">
                         <img
-                            src="https://drive.google.com/thumbnail?id=1ogkzge1RoS67NuRqx_W_AEbJg19t9P7w&sz=w600"
+                            src="https://drive.google.com/thumbnail?id=1ogkzge1RoS67NuRqx_W_AEbJg19t9P7w&amp;sz=w600"
                             alt="Rongjun Huang"
                             class="profile-picture"
                         >
@@ -521,17 +1004,47 @@
 
             <main class="container">
                 <section class="hero">
-                    <div class="hero-eyebrow">Astrophysics · Galaxy evolution</div>
-                    <div class="hero-title">High‑resolution views of galaxies in a changing universe.</div>
-                    <div class="hero-subtitle">
-                        PhD student at ICRAR / The University of Western Australia. I work on spatially‑resolved star formation and ISM diagnostics,
-                        especially how environment transforms galaxies in the Virgo Cluster.
-                    </div>
-                    <div id="typed-intro" aria-live="polite"></div>
-                    <div class="hero-actions">
-                        <a class="btn primary" href="#publications"><i class="fas fa-book"></i> Publications</a>
-                        <a class="btn" href="Resume.pdf" download><i class="fas fa-download"></i> Resume (PDF)</a>
-                        <a class="btn" href="mailto:Rongjun.Huang@icrar.org"><i class="fas fa-envelope"></i> Email</a>
+                    <div class="astro-hud">
+                        <div class="hero-copy">
+                            <div class="hero-eyebrow">Astrophysics · Galaxy evolution · IFS datacubes</div>
+                            <div class="hero-title">Resolved galaxies, star formation, and the environments that reshape them.</div>
+                            <div class="hero-subtitle">
+                                PhD student at ICRAR / The University of Western Australia working on spatially-resolved star formation,
+                                ISM diagnostics, metallicity, and environmental transformation in the Virgo Cluster.
+                            </div>
+                            <div id="typed-intro" aria-live="polite"></div>
+                            <div class="hero-tags" aria-label="Research keywords">
+                                <span><i class="fas fa-cube"></i> IFS datacubes</span>
+                                <span><i class="fas fa-project-diagram"></i> Virgo environment</span>
+                                <span><i class="fas fa-star"></i> Star formation</span>
+                                <span><i class="fas fa-wave-square"></i> ISM diagnostics</span>
+                            </div>
+                            <div class="hero-actions">
+                                <a class="btn primary" href="#publications"><i class="fas fa-book"></i> Publications</a>
+                                <a class="btn" href="Resume.pdf" download><i class="fas fa-download"></i> Resume (PDF)</a>
+                                <a class="btn" href="mailto:Rongjun.Huang@icrar.org"><i class="fas fa-envelope"></i> Email</a>
+                            </div>
+                        </div>
+                        <div class="datacube-visual" aria-hidden="true">
+                            <div class="cube-frame">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="galaxy-disc"></div>
+                            <div class="spaxel-grid" id="spaxel-grid"></div>
+                            <div class="spectrum-readout">
+                                <strong>MAUVE-MUSE resolved spectrum</strong>
+                                <div class="spectrum-lines"></div>
+                                <div class="signal-tags">
+                                    <span>H alpha</span>
+                                    <span>[O III]</span>
+                                    <span>metallicity</span>
+                                    <span>SFR surface density</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -541,13 +1054,18 @@
                         <p>
                             I am a PhD student at the International Centre for Radio Astronomy Research (ICRAR),
                             The University of Western Australia (2025–2029). My research focuses on galaxy evolution,
-                            spatially-resolved star formation, and environmental effects in clusters.
+                            spatially-resolved star formation, interstellar medium diagnostics, and environmental effects in clusters.
+                        </p>
+                        <p class="inline-note">
+                            Current focus: Virgo Cluster galaxies, MAUVE-MUSE integral-field spectroscopy, HST UV-optical imaging, and the
+                            mass-metallicity relation's dependence on star formation rate surface density.
                         </p>
                         <div class="kpi">
                             <div class="chip"><i class="fas fa-envelope"></i> Rongjun.Huang@icrar.org</div>
                             <div class="chip"><i class="fas fa-envelope"></i> Rongjun.Huang@research.uwa.edu.au</div>
                             <div class="chip"><i class="fas fa-envelope"></i> Astro@Rongjun-Huang.com</div>
                             <div class="chip"><i class="fas fa-globe"></i> <a href="https://www.Rongjun-Huang.com" target="_blank" rel="noopener">www.Rongjun-Huang.com</a></div>
+                            <div class="chip"><i class="fab fa-orcid"></i> <a href="https://orcid.org/0000-0002-6646-8365" target="_blank" rel="noopener">0000-0002-6646-8365</a></div>
                         </div>
                     </section>
 
@@ -585,45 +1103,102 @@
                 <div id="research" class="tab-content">
                     <section class="section reveal">
                         <h2>Research</h2>
-                        <ul>
-                            <li>
-                                <strong>PhD thesis (2025–2029)</strong>: Environmental effects on spatially-resolved star formation and interstellar medium properties in the Virgo Cluster.
-                                <span class="muted">Supervisor:</span> Prof. Luca Cortese
-                            </li>
-                            <li>
-                                <strong>Interests</strong>: galaxy evolution; star formation; spatially-resolved ISM diagnostics; environmental quenching and transformation.
-                            </li>
-                        </ul>
+                        <p>
+                            My PhD work asks how dense environments change galaxies internally: where star formation is suppressed or enhanced,
+                            how ISM conditions respond, and how metallicity behaves across individual spaxels instead of only in whole-galaxy averages.
+                            <span class="muted">Supervisor:</span> Prof. Luca Cortese.
+                        </p>
+                        <div class="research-dashboard">
+                            <article class="science-card">
+                                <i class="fas fa-cube"></i>
+                                <h3>IFS Datacubes</h3>
+                                <p>Turning modern integral-field spectroscopy into spatial maps of emission lines, stellar populations, gas diagnostics, and radial structure.</p>
+                            </article>
+                            <article class="science-card">
+                                <i class="fas fa-fire"></i>
+                                <h3>Star Formation</h3>
+                                <p>Tracing the resolved star-forming main sequence, SFR surface density, HII regions, and where diagnostics such as H alpha can mislead.</p>
+                            </article>
+                            <article class="science-card">
+                                <i class="fas fa-project-diagram"></i>
+                                <h3>Virgo Environment</h3>
+                                <p>Studying cluster-driven transformation in late-type Virgo galaxies using MAUVE-MUSE, HST imaging, and multi-wavelength context.</p>
+                            </article>
+                        </div>
+                        <div class="pipeline-map" aria-label="Research pipeline">
+                            <div class="pipeline-step">
+                                <small>01 datacube</small>
+                                MUSE/IFS spectra sampled across the galaxy, one spaxel at a time.
+                            </div>
+                            <div class="pipeline-step">
+                                <small>02 maps</small>
+                                Resolved star formation, gas excitation, metallicity, and ISM structure.
+                            </div>
+                            <div class="pipeline-step">
+                                <small>03 physics</small>
+                                Mass-metallicity relation, SFR surface density, feedback, and outflows.
+                            </div>
+                            <div class="pipeline-step">
+                                <small>04 environment</small>
+                                How the Virgo Cluster reshapes disks, star clusters, associations, and HII regions.
+                            </div>
+                        </div>
                     </section>
                 </div>
 
                 <div id="publications" class="tab-content">
                     <section class="section reveal">
                         <h2>First-author Publications</h2>
-                        <ol>
-                            <li>
-                                <strong><em>MAUVE–MUSE: The origin of the spatially-resolved mass–metallicity relation’s secondary dependence on star formation rate surface density</em></strong><br>
-                                <strong>Rongjun Huang</strong>, Luca Cortese, MAUVE Collaboration. 2026. <span class="muted">(In prep.)</span>
-                            </li>
-                            <li>
-                                <strong><em>Quokka-based understanding of outflows (QED) — IV. Limitations of Hα as an outflow diagnostic</em></strong><br>
-                                <strong>Rongjun Huang</strong>, Aditi Vijayan, Mark R. Krumholz. 2026. <span class="muted">MNRAS (Submitted).</span><br>
-                                DOI: <a href="https://doi.org/10.48550/arXiv.2511.05056" target="_blank" rel="noopener">10.48550/arXiv.2511.05056</a>
-                            </li>
-                            <li>
-                                <strong><em>Quokka-based understanding of outflows (QED) — II. X-ray metallicity gradients as a signature of galactic wind metal loading</em></strong><br>
-                                <strong>Rongjun Huang</strong>, Aditi Vijayan, Mark R. Krumholz. 2025. <span class="muted">MNRAS 539(2), 1723–1737.</span><br>
-                                DOI: <a href="https://doi.org/10.1093/mnras/staf593" target="_blank" rel="noopener">10.1093/mnras/staf593</a>
-                                <span class="muted">(Citations: 1, per NASA/ADS)</span>
-                            </li>
-                            <li>
-                                <strong><em>Exploring the intrinsic scatter of the star-forming galaxy main sequence at redshift 0.5 to 3.0</em></strong><br>
-                                <strong>Rongjun Huang</strong>, Andrew J. Battisti, Kathryn Grasha, Elisabete da Cunha, Claudia del P Lagos, Sarah K. Leslie &amp; Emily Wisnioski. 2023.
-                                <span class="muted">MNRAS 520(1), 446–460.</span><br>
-                                DOI: <a href="https://doi.org/10.1093/mnras/stad108" target="_blank" rel="noopener">10.1093/mnras/stad108</a>
-                                <span class="muted">(Citations: 11, per NASA/ADS)</span>
-                            </li>
-                        </ol>
+                        <div class="paper-list">
+                            <article class="paper">
+                                <span class="paper-rank">01</span>
+                                <div>
+                                    <h3><em>MAUVE-MUSE: The Origin of Spatially-resolved Mass-Metallicity Relation's Secondary Dependence on Star Formation Rate Surface Density</em></h3>
+                                    <p><strong>Rongjun Huang</strong>, Luca Cortese, Barbara Catinella, Luke J. M. Davies, Toby Brown, Andrei Ristea, Alessandro Boselli, Andrew J. Battisti, Vicente Villanueva, Kristine Spekkens, Sara L. Ellison, Daniel A. Dale, Sabine Thater &amp; Amirnezam Amiri. 2026.</p>
+                                    <div class="paper-meta">
+                                        <span>Submitted</span>
+                                        <span>MAUVE-MUSE</span>
+                                        <span>Resolved MZR</span>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="paper">
+                                <span class="paper-rank">02</span>
+                                <div>
+                                    <h3><em>Quokka-based understanding of outflows (QED) - IV. Limitations of Hα as an outflow diagnostic</em></h3>
+                                    <p><strong>Rongjun Huang</strong>, Aditi Vijayan, Mark R. Krumholz. 2026. <span class="muted">MNRAS Accepted.</span></p>
+                                    <div class="paper-meta">
+                                        <span>DOI: <a href="https://doi.org/10.1093/mnras/stag185" target="_blank" rel="noopener">10.1093/mnras/stag185</a></span>
+                                        <span>Outflows</span>
+                                        <span>H alpha diagnostics</span>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="paper">
+                                <span class="paper-rank">03</span>
+                                <div>
+                                    <h3><em>Quokka-based understanding of outflows (QED) - II. X-ray metallicity gradients as a signature of galactic wind metal loading</em></h3>
+                                    <p><strong>Rongjun Huang</strong>, Aditi Vijayan, Mark R. Krumholz. 2025. <span class="muted">MNRAS 539(2), 1723-1737.</span></p>
+                                    <div class="paper-meta">
+                                        <span>DOI: <a href="https://doi.org/10.1093/mnras/staf593" target="_blank" rel="noopener">10.1093/mnras/staf593</a></span>
+                                        <span>Citations: 1, NASA/ADS</span>
+                                        <span>X-ray metallicity gradients</span>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="paper">
+                                <span class="paper-rank">04</span>
+                                <div>
+                                    <h3><em>Exploring the Intrinsic Scatter of the Star-Forming Galaxy Main Sequence at Redshift 0.5 to 3.0</em></h3>
+                                    <p><strong>Rongjun Huang</strong>, Andrew J. Battisti, Kathryn Grasha, Elisabete da Cunha, Claudia del P Lagos, Sarah K. Leslie &amp; Emily Wisnioski. 2023. <span class="muted">MNRAS 520(1), 446-460.</span></p>
+                                    <div class="paper-meta">
+                                        <span>DOI: <a href="https://doi.org/10.1093/mnras/stad108" target="_blank" rel="noopener">10.1093/mnras/stad108</a></span>
+                                        <span>Citations: 11, NASA/ADS</span>
+                                        <span>Star-forming main sequence</span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
                     </section>
                 </div>
 
@@ -634,6 +1209,12 @@
                             <strong>Anatomy of a fall: Dissecting the environment-driven transformation of late-type Virgo cluster galaxies with HST UV-optical imaging of star clusters, associations, and HII regions</strong><br>
                             Co-PI — Hubble Space Telescope (HST) — 145 orbits (~108.8 hr)
                         </p>
+                        <div class="signal-tags">
+                            <span><i class="fas fa-satellite"></i> HST</span>
+                            <span><i class="fas fa-clock"></i> 145 orbits</span>
+                            <span><i class="fas fa-star-of-life"></i> star clusters</span>
+                            <span><i class="fas fa-circle"></i> HII regions</span>
+                        </div>
                     </section>
 
                     <section class="section reveal">
@@ -652,26 +1233,44 @@
 
                     <section class="section reveal">
                         <h2>HPC Experience</h2>
-                        <ul>
-                            <li><strong>NCI / Gadi</strong> — Project jh2: Star Formation and Feedback in a Turbulent Interstellar Medium <span class="muted">(2023–present)</span></li>
-                            <li><strong>Pawsey / Setonix</strong> — Pawsey0807 <span class="muted">(2023–present)</span></li>
-                            <li><strong>Swinburne / OzSTAR</strong> — IFS Data Analysis (oz084) <span class="muted">(2025–present)</span></li>
-                            <li><strong>CADC / CANFAR</strong> — Multiphase Astrophysics to Unveil the Virgo Environment (MAUVE) <span class="muted">(2025–present)</span></li>
-                        </ul>
+                        <div class="timeline">
+                            <article class="timeline-item">
+                                <h3>NCI / Gadi</h3>
+                                <p>Star Formation and Feedback in a Turbulent Interstellar Medium (Project jh2; PI: Mark Krumholz).</p>
+                                <div class="timeline-meta"><span>2023-present</span><span>simulations</span></div>
+                            </article>
+                            <article class="timeline-item">
+                                <h3>Pawsey / Setonix</h3>
+                                <p>Multiphase Astrophysics to Unveil the Virgo Environment (Pawsey1308; PI: Luca Cortese), plus star formation and feedback in a turbulent ISM (Pawsey0807; PI: Mark Krumholz).</p>
+                                <div class="timeline-meta"><span>2026-present</span><span>2023-present</span></div>
+                            </article>
+                            <article class="timeline-item">
+                                <h3>Swinburne / OzSTAR</h3>
+                                <p>IFS Data Analysis (oz084; PI: Luca Cortese) and Anita Summer School (oz978; PI: Mark Krumholz).</p>
+                                <div class="timeline-meta"><span>2025-present</span><span>2025-2026</span></div>
+                            </article>
+                            <article class="timeline-item">
+                                <h3>CADC / CANFAR</h3>
+                                <p>Multiphase Astrophysics to Unveil the Virgo Environment (MAUVE; PI: Toby Brown).</p>
+                                <div class="timeline-meta"><span>2025-present</span><span>MAUVE</span></div>
+                            </article>
+                        </div>
                     </section>
 
                     <section class="section reveal">
                         <h2>Software Development</h2>
-                        <ul>
-                            <li>
-                                <strong>The nGIST Pipeline</strong> — a galaxy IFS analysis pipeline for modern IFS data<br>
-                                <a href="https://github.com/geckos-survey/ngist" target="_blank" rel="noopener">https://github.com/geckos-survey/ngist</a>
-                            </li>
-                            <li>
-                                <strong>Post-processing pipeline for <em>Quokka</em> simulation code</strong> as part of the <em>yt</em> frontend<br>
-                                <a href="https://github.com/chongchonghe/yt/tree/Rongjun-ANUquokka-frontend" target="_blank" rel="noopener">https://github.com/chongchonghe/yt/tree/Rongjun-ANUquokka-frontend</a>
-                            </li>
-                        </ul>
+                        <div class="code-grid">
+                            <article class="code-item">
+                                <h3>The nGIST Pipeline</h3>
+                                <p>A galaxy IFS analysis pipeline for modern IFS data.</p>
+                                <p><a href="https://github.com/geckos-survey/ngist" target="_blank" rel="noopener">github.com/geckos-survey/ngist</a></p>
+                            </article>
+                            <article class="code-item">
+                                <h3>Quokka / yt frontend post-processing</h3>
+                                <p>Post-processing pipeline for <em>Quokka</em> simulation code as part of the <em>yt</em> frontend.</p>
+                                <p><a href="https://github.com/chongchonghe/yt/tree/Rongjun-ANUquokka-frontend" target="_blank" rel="noopener">github.com/chongchonghe/yt</a></p>
+                            </article>
+                        </div>
                     </section>
 
                     <section class="section reveal">
@@ -693,25 +1292,54 @@
 
                     <section class="section reveal">
                         <h2>Conference Talks</h2>
-                        <ul>
-                            <li>
-                                <strong>Exploring the intrinsic scatter of the star-forming galaxy main sequence at redshift 0.5 to 3.0</strong><br>
-                                R. Huang — 2022 ASTRO 3D Science Meeting, Burnley, VIC, Australia <span class="muted">(Talk; June 2022)</span>
-                            </li>
-                            <li>
-                                <strong>Sparkler Talk (1-min): Intrinsic scatter of the star-forming galaxy main sequence</strong><br>
-                                R. Huang — 2023 ASTRO 3D Science Meeting, Freemantle, WA, Australia <span class="muted">(Talk; June 2023)</span>
-                            </li>
-                        </ul>
+                        <div class="timeline">
+                            <article class="timeline-item">
+                                <h3>When metallicity follows or fights star formation: a resolved inversion in Virgo spirals from MAUVE-MUSE</h3>
+                                <p>R. Huang — Astronomical Society of Australia Annual Scientific Meeting 2026, Canberra, ACT, Australia.</p>
+                                <div class="timeline-meta"><span>Talk</span><span>July 2026</span></div>
+                            </article>
+                            <article class="timeline-item">
+                                <h3>When metallicity follows or fights star formation: a resolved inversion in Virgo spirals from MAUVE-MUSE</h3>
+                                <p>R. Huang — European Astronomical Society Annual Meeting 2026, SS7, Lausanne, Switzerland.</p>
+                                <div class="timeline-meta"><span>Contributed talk</span><span>June-July 2026</span></div>
+                            </article>
+                            <article class="timeline-item">
+                                <h3>MAUVE-MUSE: When Metallicity Follows or Fights Star Formation - A Mass Dependent Inversion in Virgo Spirals</h3>
+                                <p>R. Huang — Australian-Chinese Astronomical Research Workshop 11, Geraldton, WA, Australia.</p>
+                                <div class="timeline-meta"><span>Sparkler talk</span><span>LOC</span><span>March 2026</span></div>
+                            </article>
+                            <article class="timeline-item">
+                                <h3>Intrinsic Scatter of the Star-Forming Galaxy Main Sequence</h3>
+                                <p>R. Huang — ASTRO 3D Science Meetings in Burnley, VIC and Fremantle, WA.</p>
+                                <div class="timeline-meta"><span>Talk, June 2022</span><span>Sparkler talk, June 2023</span></div>
+                            </article>
+                        </div>
                     </section>
 
                     <section class="section reveal">
                         <h2>Grants &amp; Awards</h2>
-                        <ul>
-                            <li><strong>UWA Data Institute Awards 2025 Travel Grants</strong>: 2000 AUD <span class="muted">(December 2025)</span></li>
-                            <li><strong>ASTRO 3D travel funds</strong>: 100 AUD <span class="muted">(June 2022)</span></li>
-                            <li><strong>ASTRO 3D travel funds</strong>: 1500 AUD <span class="muted">(June 2023)</span></li>
-                        </ul>
+                        <div class="award-grid">
+                            <article class="award-item">
+                                <h3>UWA Data Institute Awards 2025 Travel Grants</h3>
+                                <p>2000 AUD <span class="muted">(December 2025)</span></p>
+                            </article>
+                            <article class="award-item">
+                                <h3>ASTRO 3D travel funds</h3>
+                                <p>1500 AUD <span class="muted">(June 2023)</span></p>
+                            </article>
+                            <article class="award-item">
+                                <h3>ASTRO 3D travel funds</h3>
+                                <p>100 AUD <span class="muted">(June 2022)</span></p>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="section reveal">
+                        <h2>Scholarship</h2>
+                        <p>
+                            <strong>The Australian Government Research Training Program (RTP) scholarship</strong><br>
+                            The University of Western Australia <span class="muted">(2025-2028)</span>
+                        </p>
                     </section>
 
                     <section class="section reveal">
@@ -744,15 +1372,15 @@
                         <h2>Photo Gallery</h2>
                         <div class="photo-gallery">
                             <div class="photo-item">
-                                <img src="https://drive.google.com/thumbnail?id=1p4SrSEHQNugS92XAYv_UC8SZqNH_RKCn&sz=w1000" alt="With Supervisor Dr. Andrew Battisti in 2024">
+                                <img src="https://drive.google.com/thumbnail?id=1p4SrSEHQNugS92XAYv_UC8SZqNH_RKCn&amp;sz=w1000" alt="With Supervisor Dr. Andrew Battisti in 2024">
                                 <p class="muted">With Supervisor Dr. Andrew Battisti (2024)</p>
                             </div>
                             <div class="photo-item">
-                                <img src="https://drive.google.com/thumbnail?id=1P6WPIIPEg0EdnBMNJER8QINMKzpzCG9_&sz=w1000" alt="With Prof. Brian Schmidt in 2022 Honours Graduation">
+                                <img src="https://drive.google.com/thumbnail?id=1P6WPIIPEg0EdnBMNJER8QINMKzpzCG9_&amp;sz=w1000" alt="With Prof. Brian Schmidt in 2022 Honours Graduation">
                                 <p class="muted">With Prof. Brian Schmidt (Honours graduation, 2022)</p>
                             </div>
                             <div class="photo-item">
-                                <img src="https://drive.google.com/thumbnail?id=1leYZKwlD40kHcU79su7x44-ZUWmPCv9F&sz=w1000" alt="Rongjun Huang in 2020">
+                                <img src="https://drive.google.com/thumbnail?id=1leYZKwlD40kHcU79su7x44-ZUWmPCv9F&amp;sz=w1000" alt="Rongjun Huang in 2020">
                                 <p class="muted">Me (2020)</p>
                             </div>
                         </div>
@@ -766,8 +1394,8 @@
                     <a href="https://orcid.org/0000-0002-6646-8365" target="_blank" rel="noopener" aria-label="ORCID"><i class="fab fa-orcid"></i></a>
                     <a href="https://github.com/Rongjun-ANU" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     <a href="https://astro3d.org.au/" target="_blank" rel="noopener" aria-label="ASTRO 3D"><i class="fas fa-meteor"></i></a>
-                    <a href="https://scholar.google.com/citations?user=ziERchkAAAAJ&hl=en&oi=ao" target="_blank" rel="noopener" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
-                    <a href="https://arxiv.org/search/?query=Huang%2C+Rongjun&searchtype=author&abstracts=show&order=-announced_date_first&size=50" target="_blank" rel="noopener" aria-label="arXiv"><i class="fas fa-file-alt"></i></a>
+                    <a href="https://scholar.google.com/citations?user=ziERchkAAAAJ&amp;hl=en&amp;oi=ao" target="_blank" rel="noopener" aria-label="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+                    <a href="https://arxiv.org/search/?query=Huang%2C+Rongjun&amp;searchtype=author&amp;abstracts=show&amp;order=-announced_date_first&amp;size=50" target="_blank" rel="noopener" aria-label="arXiv"><i class="fas fa-file-alt"></i></a>
                 </div>
                 <p>
                     Contact: Rongjun.Huang@icrar.org | Rongjun.Huang@research.uwa.edu.au | Astro@Rongjun-Huang.com
@@ -776,6 +1404,7 @@
 
             <script>
                 const tabLinks = document.querySelectorAll('.tab-link');
+                const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
                 // Cursor spotlight (high-tech feel)
                 window.addEventListener('mousemove', (e) => {
@@ -848,11 +1477,16 @@
                 // Starfield
                 const canvas = document.getElementById('stars-canvas');
                 const ctx = canvas.getContext('2d');
+                const cubeCanvas = document.getElementById('datacube-canvas');
+                const cubeCtx = cubeCanvas.getContext('2d');
                 let stars = [];
+                let cubeParticles = [];
 
                 function resizeCanvas() {
                     canvas.width = window.innerWidth;
                     canvas.height = window.innerHeight;
+                    cubeCanvas.width = window.innerWidth;
+                    cubeCanvas.height = window.innerHeight;
                 }
 
                 function createStars() {
@@ -865,6 +1499,29 @@
                         vy: (Math.random() - 0.5) * 0.35,
                         alpha: Math.random() * 0.6 + 0.2,
                     }));
+                    createCubeParticles();
+                }
+
+                function createCubeParticles() {
+                    const layers = 5;
+                    const side = window.innerWidth < 700 ? 5 : 7;
+                    cubeParticles = [];
+                    for (let z = 0; z < layers; z += 1) {
+                        for (let y = 0; y < side; y += 1) {
+                            for (let x = 0; x < side; x += 1) {
+                                const distance = Math.hypot(x - side / 2, y - side / 2);
+                                if (distance > side * 0.56 && Math.random() > 0.34) continue;
+                                cubeParticles.push({
+                                    x,
+                                    y,
+                                    z,
+                                    side,
+                                    glow: Math.random() * 0.5 + 0.35,
+                                    phase: Math.random() * Math.PI * 2,
+                                });
+                            }
+                        }
+                    }
                 }
 
                 function drawStars() {
@@ -888,8 +1545,61 @@
                     }
                 }
 
+                function drawDatacube() {
+                    cubeCtx.clearRect(0, 0, cubeCanvas.width, cubeCanvas.height);
+                    const w = cubeCanvas.width;
+                    const h = cubeCanvas.height;
+                    const t = performance.now() * 0.001;
+                    const baseX = w * 0.74;
+                    const baseY = h * 0.66;
+                    const scale = Math.min(w, h) * 0.035;
+
+                    cubeCtx.save();
+                    cubeCtx.lineWidth = 1;
+                    for (const p of cubeParticles) {
+                        const cx = (p.x - p.side / 2) * scale;
+                        const cy = (p.y - p.side / 2) * scale;
+                        const cz = p.z * scale * 0.9;
+                        const drift = Math.sin(t + p.phase) * 2.4;
+                        const x = baseX + cx - cz * 0.42 + drift;
+                        const y = baseY + cy - cz * 0.25 + Math.cos(t * 0.8 + p.phase) * 1.7;
+                        const pulse = (Math.sin(t * 2.2 + p.phase) + 1) * 0.5;
+                        const alpha = 0.08 + p.glow * (0.2 + pulse * 0.35);
+
+                        cubeCtx.beginPath();
+                        cubeCtx.fillStyle = `rgba(103, 255, 191, ${alpha})`;
+                        cubeCtx.arc(x, y, 1.1 + pulse * 1.5, 0, Math.PI * 2);
+                        cubeCtx.fill();
+
+                        if (p.x % 2 === 0 && p.y % 2 === 0) {
+                            cubeCtx.beginPath();
+                            cubeCtx.strokeStyle = `rgba(90, 165, 255, ${alpha * 0.22})`;
+                            cubeCtx.moveTo(x, y);
+                            cubeCtx.lineTo(x - scale * 0.7, y + scale * 0.22);
+                            cubeCtx.stroke();
+                        }
+                    }
+
+                    for (let i = 0; i < 5; i += 1) {
+                        const y = h * (0.18 + i * 0.14) + Math.sin(t + i) * 8;
+                        const gradient = cubeCtx.createLinearGradient(0, y, w, y);
+                        gradient.addColorStop(0, 'rgba(90, 165, 255, 0)');
+                        gradient.addColorStop(0.55, 'rgba(103, 255, 191, 0.05)');
+                        gradient.addColorStop(0.78, 'rgba(255, 207, 111, 0.09)');
+                        gradient.addColorStop(1, 'rgba(255, 94, 130, 0)');
+                        cubeCtx.beginPath();
+                        cubeCtx.strokeStyle = gradient;
+                        cubeCtx.lineWidth = 1.1;
+                        cubeCtx.moveTo(w * 0.08, y);
+                        cubeCtx.bezierCurveTo(w * 0.34, y - 45, w * 0.62, y + 52, w * 0.98, y - 10);
+                        cubeCtx.stroke();
+                    }
+                    cubeCtx.restore();
+                }
+
                 function animateStars() {
                     drawStars();
+                    drawDatacube();
                     updateStars();
                     requestAnimationFrame(animateStars);
                 }
@@ -897,19 +1607,41 @@
                 window.addEventListener('resize', () => {
                     resizeCanvas();
                     createStars();
+                    if (reduceMotion) {
+                        drawStars();
+                        drawDatacube();
+                    }
                 });
 
                 resizeCanvas();
                 createStars();
-                animateStars();
+                if (reduceMotion) {
+                    drawStars();
+                    drawDatacube();
+                } else {
+                    animateStars();
+                }
+
+                const spaxelGrid = document.getElementById('spaxel-grid');
+                if (spaxelGrid) {
+                    for (let i = 0; i < 81; i += 1) {
+                        const cell = document.createElement('i');
+                        cell.style.setProperty('--i', i);
+                        spaxelGrid.appendChild(cell);
+                    }
+                }
 
                 // Typing effect
-                const introText = "PhD student at ICRAR/UWA • Galaxy evolution • Star formation • Virgo Cluster";
+                const introText = "ICRAR/UWA PhD • MAUVE-MUSE • Virgo Cluster • resolved star formation • IFS datacubes";
                 const typedEl = document.getElementById('typed-intro');
                 let idx = 0;
 
                 function typeIntro() {
                     if (!typedEl) return;
+                    if (reduceMotion) {
+                        typedEl.textContent = introText;
+                        return;
+                    }
                     if (idx < introText.length) {
                         typedEl.textContent += introText.charAt(idx);
                         idx += 1;
